@@ -47,7 +47,7 @@ const schemaJoiUser = Joi.object({
 });
 
 // add first user -> EXAMPLE!!!
-// curl --request PORT localhost:8000/api/user/1 -H "Content-Type:application/json" -d '{"name": "first"}' && echo
+// curl --request POST localhost:8000/api/add-first-user -H "Content-Type:application/json" -d '{"name": "first"}' && echo
 router.post('/add-first-user', async (req, res) => {
 	const firstUser = userModule.UserModuleData.first;
 	console.log('Create first user');
@@ -64,22 +64,69 @@ router.post('/add-first-user', async (req, res) => {
 	} 
 });
 
+// add all users
+// curl --request POST localhost:8000/api/user/add-all-users -H "Content-Type:application/json" -d '{"name": "all-users"}' && echo
+router.post('/add-all-users', async (req, res) => {
+	console.log('Create all users');
+	if (req.body.name === "all-users") {
+		let check = new Object();
+
+		check.first = Joi.validateu(userModule.UserModuleData.first, schemaJoiUser);
+		check.second = Joi.validate(userModule.UserModuleData.second, schemaJoiUser);
+		check.third = Joi.validate(userModule.UserModuleData.third, schemaJoiUser);
+		check.fourth = Joi.validate(userModule.UserModuleData.fourth, schemaJoiUser);
+		check.fifth = Joi.validate(userModule.UserModuleData.fifth, schemaJoiUser);
+		check.sixth = Joi.validate(userModule.UserModuleData.sixth, schemaJoiUser);
+
+		if (check.first.error && 
+			check.second.error && 
+			check.third.error && 
+			check.fourth.error && 
+			check.fifth.error && 
+			check.sixth.error) {
+			for (let i in check) { 
+				console.error(i.error.details[0].messages);
+				res.status(404).send(i.error.details[0].message);
+				}
+				return;
+		} else { 
+			let a = await User(userModule.UserModuleData.first).save();
+			console.log('Item added ', a);
+			let b = await User(userModule.UserModuleData.first).save();
+			console.log('Item added ', b);
+			let c = await User(userModule.UserModuleData.first).save();
+			console.log('Item added ', c);
+			let d = await User(userModule.UserModuleData.first).save();
+			console.log('Item added ', d);
+			let e = await User(userModule.UserModuleData.first).save();
+			console.log('Item added ', e);
+			let f = await User(userModule.UserModuleData.first).save();
+			console.log('Item added ', f);
+		}
+	}
+});
+
+// alter user's data
+// curt --request PUT localhost:8000/api/id -H "Content-Type:application/json" -d '{}' && echo
+// router.put('/:id', async (req, res) => {});
+
+// delete user with id
+// curl --request DELETE localhost:8000/api/delete-user/id -H "Content-Type:application/json" && echo
+router.delete('/:id', async (req, res) => { 
+	console.log(`Delete user with id ${req.params.id}`);
+	// check if user exists in collection
+	res.send(await User.deleteOne({id: req.params.id}))
+});
+
+// delete all users 
+// curl --request DELETE localhost:8000/api/delete-all -H "Content-Type:application/json" && echo
+router.delete('/delete-all', async (req, res) => { 
+	console.log('Delete all users');
+	res.send(await User.deleteMany());
+})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.expors = router;
 /**
 	RESTful API - End
 */
