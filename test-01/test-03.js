@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 class Database {
 
 	constructor() {
-		mongoose.connect(dblink, {useNewParser: true})
+		mongoose.connect(dblink, { useNewUrlParser: true })
 		.then(() => {
 			console.log('Successfully connected to db/user');
 		})
@@ -24,7 +24,7 @@ class Database {
 
 	// create model example
 	createModel() {
-		return mongoose.model('User', new mongoose.Schema(user.UserModelAsync));
+		return mongoose.model('User', new mongoose.Schema(user.UserModel));
 	}
 }
 

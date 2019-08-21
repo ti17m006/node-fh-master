@@ -36,7 +36,7 @@
 			// validator - valid email address format!
 		},
 		phone: {
-			type String,
+			type: String,
 			required: false,
 			minlen: 10,
 			maxlen: 50
@@ -92,7 +92,7 @@
 			phone: "+89430958390"
 		},
 		sixth: {
-		id: 7,
+			id: 7,
 			username: "user-f",
 			isActive: false,
 			date: Date.now(),
@@ -101,6 +101,9 @@
 			phone: "+439084500349"
 		}
 	}
+	
+module.exports.UserModel = UserModelAsync
+module.exports.UserData = UserModelData;
 
 /**
 	model - End
