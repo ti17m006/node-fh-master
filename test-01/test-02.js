@@ -36,7 +36,7 @@ router.get('/:id', async (req, res) => {
 // https://hapi.dev/family/joi
 
 const schemaJoiUser = Joi.object({
-	id: Joi.number().integer().required();
+	id: Joi.number().integer().required(),
 	username: Joi.string().min(3).max(255).required(),
 	// https://hapi.dev/family/joi/#boolean---inherits-form-any
 	isActive: Joi.boolean().required(),
