@@ -26,7 +26,7 @@ router.get('/:id', async (req, res) => {
 	console.log(`Get ${req.params.id}`);
 	// TODO
 	// if object does not exist!!!
-	res.send(await User.find({id: req.params.id}));
+	res.send(await User.find({ id: req.params.id }));
 });
 
 // https://hapi.dev/family/joi
@@ -77,18 +77,18 @@ router.post('/add-all-users', async (req, res) => {
 		check.fifth = Joi.validate(userModule.UserData.fifth, schemaJoiUser);
 		check.sixth = Joi.validate(userModule.UserData.sixth, schemaJoiUser);
 
-		if (check.first.error && 
-			check.second.error && 
-			check.third.error && 
-			check.fourth.error && 
-			check.fifth.error && 
+		if (check.first.error &&
+			check.second.error &&
+			check.third.error &&
+			check.fourth.error &&
+			check.fifth.error &&
 			check.sixth.error) {
-			for (let i in check) { 
+			for (let i in check) {
 				console.error(i.error.details[0].messages);
 				res.status(404).send(i.error.details[0].message);
-				}
-				return;
-		} else { 
+			}
+			return;
+		} else {
 			let a = await User(userModule.UserData.first).save();
 			console.log('Item added ', a);
 			let b = await User(userModule.UserData.second).save();
@@ -111,15 +111,15 @@ router.post('/add-all-users', async (req, res) => {
 
 // delete user with id
 // curl --request DELETE localhost:8000/api/user/id -H "Content-Type:application/json" && echo
-router.delete('/:id', async (req, res) => { 
+router.delete('/:id', async (req, res) => {
 	console.log(`Delete user with id ${req.params.id}`);
 	// check if user exists in collection
-	res.send(await User.deleteOne({id: req.params.id}))
+	res.send(await User.deleteOne({ id: req.params.id }))
 });
 
 // delete all users 
 // curl --request DELETE localhost:8000/api/user/delete-all/all -H "Content-Type:application/json" && echo
-router.delete('/delete-all/all', async (req, res) => { 
+router.delete('/delete-all/all', async (req, res) => {
 	console.log('Delete all users');
 	res.send(await User.deleteMany());
 })
