@@ -6,6 +6,7 @@
   "dependencies": {
     "@hapi/joi": "^15.1.0",
     "express": "^4.17.1",
+    "json-to-js": "^1.0.2",
     "mongoose": "^5.6.4"
   },
   "scripts": {
