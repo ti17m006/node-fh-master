@@ -5,7 +5,7 @@
 const express = require('express');
 const Joi = require('@hapi/joi');
 
-const db = require('./t09a03-db');
+const db = require('./test-03-db');
 const UserDataJSON = require('../geo-test-data/user-data-01.json');
 const FirstAreaJSON = require('../geo-test-data/geo-test-01.json');
 const SecondAreaJSON = require('../geo-test-data/geo-test-02.json');
@@ -48,16 +48,9 @@ Router.post('/insert-all-users', (req, res) => {
                 console.error(`Error save() ${exception}\n`);
             }
         }
-        res.status(200).send('Success');
+        res.send('Success');
+        return;
     });
-});
-
-// check json
-// curl --request GET localhost:8000/api/get-all-users-json -H "Content-Type:application/json" && echo 
-Router.get('test/get-all-users-json', (req, res) => {
-    console.log('Get JSON');
-    UserData.forEach(user => console.log(user));
-    res.status(200).send('Success');
 });
 
 
@@ -70,7 +63,8 @@ Router.get('/user/get-all-users', async (req, res) => {
     users.forEach(user => {
         console.log(user);
     });
-    res.status(200).send('Success');
+    res.send('Success');
+    return;
     // res.send(users);
 });
 
@@ -82,7 +76,7 @@ Router.get('/user/get-all-active-users', async (req, res) => {
     users.forEach(user => {
         console.log(user);
     });
-    res.status(200).send('Success');
+    res.send('Success');
     // res.send(users);
 });
 
@@ -94,7 +88,7 @@ Router.get('/user/get-all-inactive-users', async (req, res) => {
     users.forEach(user => {
         console.log(user);
     });
-    res.status(200).send('Success');
+    res.send('Success');
     // res.send(users);
 });
 
@@ -125,7 +119,7 @@ Router.get('/user/first-area', async (req, res) => {
     const first = users[0];
     console.log(first);
     const result = await Geolocation(getArea(FirstAreaJSON, first, 1)).save();
-    res.status(200).send('Success');
+    res.send('Success');
 });
 
 // curl --request GET localhost:8000/api/user/second-area -H "Content-Type:application/json" && echo 
@@ -134,7 +128,7 @@ Router.get('/user/second-area', async (req, res) => {
     const first = users[0];
     console.log(first);
     const result = await Geolocation(getArea(SecondAreaJSON, first, 2)).save();
-    res.status(200).send('Success');
+    res.send('Success');
 });
 
 // curl --request GET localhost:8000/api/user/third-area -H "Content-Type:application/json" && echo 
@@ -143,7 +137,7 @@ Router.get('/user/third-area', async (req, res) => {
     const first = users[0];
     console.log(first);
     const result = await Geolocation(getArea(ThirdAreaJSON, first, 3)).save();
-    res.status(200).send('Success');
+    res.send('Success');
 });
 
 Router.get('/user/:id', async (req, res) => {
@@ -164,7 +158,7 @@ Router.delete('/delete-all-data', async (req, res) => {
     console.log('Delete all users');
     const deleteUsers = await User.deleteMany();
     const deleteGeolocations = await Geolocation.deleteMany();
-    res.status(200).send('Success');
+    res.send('Success');
 });
 
 module.exports = Router;

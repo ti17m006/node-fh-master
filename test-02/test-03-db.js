@@ -6,7 +6,7 @@ const localhost = '127.0.0.1:27017';
 const database = 'user-02';
 const dblink = `mongodb://${localhost}/${database}`;
 
-const Model = require('./t09a04-models');
+const Model = require('./test-04-model');
 
 const mongoose = require('mongoose');
 
