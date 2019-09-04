@@ -113,31 +113,34 @@ function getArea(area, user, index) {
 }
 
 // First active user geolocation data collection
-// curl --request GET localhost:8000/api/user/first-area -H "Content-Type:application/json" && echo 
-Router.get('/user/first-area', async (req, res) => {
+// curl --request POST localhost:8000/api/user/first-area -H "Content-Type:application/json" && echo 
+Router.post('/user/first-area', async (req, res) => {
     const users = await User.find({ isActive: true }).sort('id');
     const first = users[0];
     console.log(first);
     const result = await Geolocation(getArea(FirstAreaJSON, first, 1)).save();
     res.send('Success');
+    return;
 });
 
-// curl --request GET localhost:8000/api/user/second-area -H "Content-Type:application/json" && echo 
-Router.get('/user/second-area', async (req, res) => {
+// curl --request POST localhost:8000/api/user/second-area -H "Content-Type:application/json" && echo 
+Router.post('/user/second-area', async (req, res) => {
     const users = await User.find({ isActive: true }).sort('id');
     const first = users[0];
     console.log(first);
     const result = await Geolocation(getArea(SecondAreaJSON, first, 2)).save();
     res.send('Success');
+    return;
 });
 
-// curl --request GET localhost:8000/api/user/third-area -H "Content-Type:application/json" && echo 
-Router.get('/user/third-area', async (req, res) => {
+// curl --request POST localhost:8000/api/user/third-area -H "Content-Type:application/json" && echo 
+Router.post('/user/third-area', async (req, res) => {
     const users = await User.find({ isActive: true }).sort('id');
     const first = users[0];
     console.log(first);
     const result = await Geolocation(getArea(ThirdAreaJSON, first, 3)).save();
     res.send('Success');
+    return;
 });
 
 Router.get('/user/:id', async (req, res) => {
