@@ -1,3 +1,13 @@
+/**
+ * HTTP methods
+ */
 
-mymessage = "Example.\n"
-console.log(mymessage);
+ function httpGet() {}
+
+ function httpPost() {}
+
+ function httpPut() {}
+
+ function httpDelete() {}
+
+ function httpBadRequest () {}
