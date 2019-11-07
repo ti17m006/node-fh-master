@@ -21,18 +21,6 @@ router.get('/get-all-users', async (req, res) => {
     res.send('Success');
     return;
 });
-router.post('/create-all-users', async (req, res) => {
-    dataJSON.forEach(async (user) => {
-        try {
-            console.log(await Users(user).save());
-        }
-        catch (exception) {
-            console.error(`Error save() ${exception}\n`);
-        }
-    });
-    res.send('Success');
-    return;
-});/*
 router.post('/create-all-users', (req, res) => {
     console.log('\nCreate all users: \n');
     dataJSON.forEach(async (user) => {
@@ -51,5 +39,5 @@ router.post('/create-all-users', (req, res) => {
         res.send('Success');
         return;
     });
-});*/
+});
 module.exports = router;

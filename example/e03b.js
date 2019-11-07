@@ -1,6 +1,6 @@
 /** DB connect */
 const localhost = '127.0.0.1:27017';
-const database = 'example02';
+const database = 'example03';
 const dblink = `mongodb://${localhost}/${database}`;
 const Model = require('./e03c');
 const mongoose = require('mongoose');
