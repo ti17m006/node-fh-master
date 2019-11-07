@@ -2,7 +2,7 @@
 const localhost = '127.0.0.1:27017';
 const database = 'example03';
 const dblink = `mongodb://${localhost}/${database}`;
-const Model = require('./e03c');
+const Model = require('./e03c').User;
 const mongoose = require('mongoose');
 class Database {
     constructor() {
@@ -15,7 +15,7 @@ class Database {
         });
     }
     createUserModel() {
-        return mongoose.model('Users', new mongoose.Schema(Model.User));
+        return mongoose.model('users', new mongoose.Schema(Model));
     }
 }
 module.exports = new Database();

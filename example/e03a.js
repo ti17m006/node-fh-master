@@ -6,7 +6,6 @@ const db = require('./e03b');
 const dataJSON = require('./e03d.json');
 db;
 const Users = db.createUserModel();
-
 const schemaJoiUser = Joi.object({
     index: Joi.number().integer().required(),
     fullname: Joi.string().min(3).max(255).required(),
@@ -36,8 +35,8 @@ router.post('/create-all-users', (req, res) => {
                 console.error(`Error save() ${exception}\n`);
             }
         }
-        res.send('Success');
-        return;
     });
+    res.send('Success');
+    return;
 });
 module.exports = router;
