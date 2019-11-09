@@ -1,0 +1,43 @@
+/** DB Models */
+const Id = {
+    type: Number,
+    min: 2,
+    required: true
+}
+const FullName = {
+    type: String,
+    minlen: 4,
+    maxlen: 255,
+    required: true
+}
+const Username = {
+    type: String,
+    minlen: 4,
+    maxlen: 255,
+    required: true
+}
+const ManagerModel = {
+    id: Id,
+    fullname: FullName,
+    username: Username
+}
+const WorkerModel = {
+    id: Id,
+    fullname: FullName,
+    username: Username
+}
+const GeolocationModel = {
+    workerId: {
+        type: WorkerModel.id,
+        reference: WorkerModel.username
+    },
+    location: {
+        index: Number,
+        date: { type: Date, default: Date.now() },
+        type: { type: String, default: 'MultiPoint' },
+        coordinates: [[Number, Number]]
+    }
+}
+module.exports.Manager = ManagerModel;
+module.exports.User = UserModel;
+module.exports.Geolocation = GeolocationModel;
