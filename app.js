@@ -1,4 +1,3 @@
 console.log('app.js');
-
-const myapp = require('./test-02/test-01-app');
+const myapp = require('./example04/app');
 myapp;
