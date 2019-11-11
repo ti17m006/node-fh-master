@@ -116,9 +116,7 @@ router.post('/geolocation/:userId', async (req, res) => {
 
                             });
                             console.log(tmp);
-                            console.log(tmp[1].location);
-                            console.log(tmp[1].location.date);
-                            console.log(tmp[1].location.type);
+                            console.log(tmp.location);
                             // console.log(tmp[1].location.coordinates);
                             // console.log(tmp[1].location.coordinates);
 
