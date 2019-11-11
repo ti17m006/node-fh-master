@@ -1,7 +1,7 @@
 /** DB Models */
 const Id = {
     type: Number,
-    min: 2,
+    min: 1,
     required: true
 }
 const FullName = {

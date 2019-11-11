@@ -21,7 +21,7 @@ class Database {
         return mongoose.model('Workers', new mongoose.Schema(Model.Worker));
     }
     createGeolocation() {
-        return mongoose.model('Geolocations', new mongoose.Schema('Geolocations', Model.Geolocation));
+        return mongoose.model('Geolocations', new mongoose.Schema(Model.Geolocation));
     }
 }
 module.exports = new Database();
