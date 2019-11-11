@@ -39,5 +39,5 @@ const GeolocationModel = {
     }
 }
 module.exports.Manager = ManagerModel;
-module.exports.User = UserModel;
+module.exports.Worker = WorkerModel;
 module.exports.Geolocation = GeolocationModel;
