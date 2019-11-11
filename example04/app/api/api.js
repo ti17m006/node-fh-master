@@ -92,32 +92,36 @@ router.get('/worker/:id', async (req, res) => {
 
 router.post('/geolocation/:userId', async (req, res) => {
     const _id = parseInt(req.params.userId);
-    let tmp = {
+    let tmp =
+    {
         workerId: Number,
-        location: {
-            index: Number,
-            date: { type: Date, default: Date.now() },
-            type: { type: String, default: 'MultiPoint' },
-            coordinates: [[Number, Number]]
-        }
+        location:[
+            {
+                date: { type: Date, default: Date.now() },
+                type: { type: String, default: 'MultiPoint' },
+                coordinates: [[Number, Number]]
+            }
+        ]
+        
     };
     if (_id > 0) {
         try {
             const worker = await Workers.find({ id: _id });
             if (worker.length) {
+                tmp.workerId = worker[0].id;
                 switch (worker[0].id) {
                     case 1:
                         try {
-                            geoData.Geo01.features.forEach(element => {
-                                tmp.id = worker[0].id;
-                                tmp.location.index = 1;
-                                tmp.location.type = element.geometry.type;
-                                element.geometry.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(tmp.id);
-                                console.log('\n');                                
+                            geoData.Geo01.features.forEach(e => {
+
                             });
+                            console.log(tmp);
+                            console.log(tmp[1].location);
+                            console.log(tmp[1].location.date);
+                            console.log(tmp[1].location.type);
+                            // console.log(tmp[1].location.coordinates);
+                            // console.log(tmp[1].location.coordinates);
+
                             // geoData.Geo01.features.forEach(async (element) => {
                             //     tmp.id = element.id;
                             //     tmp.location.index = element.location.index;
