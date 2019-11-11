@@ -29,10 +29,9 @@ const WorkerModel = {
 const GeolocationModel = {
     workerId: {
         type: WorkerModel.id,
-        reference: WorkerModel.username
     },
     location: {
-        index: Number,
+        index: { type: Number, min: 1, required: true },
         date: { type: Date, default: Date.now() },
         type: { type: String, default: 'MultiPoint' },
         coordinates: [[Number, Number]]

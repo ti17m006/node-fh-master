@@ -6,7 +6,7 @@ const Joi = require('@hapi/joi');
 const db = require('../database/db_connection');
 const schemas = require('../../app_modules/joi_schema');
 const managersData = require('../database/data/managers.json');
-const userData = require('../database/data/users.json');
+const workersData = require('../database/data/workers.json');
 const geoData = require('../database/data/geo/d_all');
 
 db;
@@ -33,12 +33,16 @@ router.post('/manager/create', (req, res) => {
 });
 
 router.get('/manager/:id', async (req, res) => {
-    let manager;
-    let _id = parseInt(req.params.id);
-    if ( _id > 0) {
+    const _id = parseInt(req.params.id);
+    if (_id > 0) {
         try {
-            manager = await Managers.find({ id: _id });
-            res.send(manager + '\n');
+            const manager = await Managers.find({ id: _id });
+            //console.log(maneger);
+            if (manager.length) {
+                res.send(manager + '\n');
+            } else {
+                res.status(404).send(`Doesn't exist\n`);
+            }
         } catch (exception) {
             console.error(`Error get()  ${exception}\n`);
             res.status(404).send('\n');
@@ -48,4 +52,260 @@ router.get('/manager/:id', async (req, res) => {
     }
 });
 
+router.post('/worker/create', (req, res) => {
+    workersData.forEach(async (worker) => {
+        if (Joi.validate(worker, schemas.JoiWorker).error) {
+            console.error(`my-error: ${user.error.details[0].messages}`);
+            res.status(404).send(user.error.details[0].messages);
+            return;
+        } else {
+            try {
+                console.log(await Workers(worker).save());
+            }
+            catch (exception) {
+                console.error(`Error save() ${exception}\n`);
+            }
+        }
+    });
+    res.status(200).send('Workers saved\n');
+});
+
+router.get('/worker/:id', async (req, res) => {
+    const _id = parseInt(req.params.id);
+    if (_id > 0) {
+        try {
+            const worker = await Workers.find({ id: _id });
+            // console.log(worker);
+            if (worker.length) {
+                res.send(worker + '\n');
+            } else {
+                res.status(404).send(`Doesn't exist\n`);
+            }
+        } catch {
+            console.error(`Error get()  ${exception}\n`);
+            res.status(404).send('\n');
+        }
+    } else {
+        res.status(404).send(`Invalid id: ${req.params.id}\n`);
+    }
+});
+
+router.post('/geolocation/:userId', async (req, res) => {
+    const _id = parseInt(req.params.userId);
+    let tmp = {
+        workerId: Number,
+        location: {
+            index: Number,
+            date: { type: Date, default: Date.now() },
+            type: { type: String, default: 'MultiPoint' },
+            coordinates: [[Number, Number]]
+        }
+    };
+    if (_id > 0) {
+        try {
+            const worker = await Workers.find({ id: _id });
+            if (worker.length) {
+                switch (worker[0].id) {
+                    case 1:
+                        try {
+                            geoData.Geo01.features.forEach(element => {
+                                tmp.id = worker[0].id;
+                                tmp.location.index = 1;
+                                tmp.location.type = element.geometry.type;
+                                element.geometry.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(tmp.id);
+                                console.log('\n');                                
+                            });
+                            // geoData.Geo01.features.forEach(async (element) => {
+                            //     tmp.id = element.id;
+                            //     tmp.location.index = element.location.index;
+                            //     tmp.location.date = element.location.date;
+                            //     tmp.location.type = element.location.type;
+                            //     element.coordinates.forEach(coordinates => {
+                            //         tmp.location.coordinates = coordinates.slice();
+                            //     });
+                            //     console.log(await Geolocations(tmp).save());
+                            // });
+                        }
+                        catch (exception) {
+                            console.error(`Geo01  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    case 2:
+                        try {
+                            geoData.Geo02.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo02  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    case 3:
+                        try {
+                            geoData.Geo03.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo03  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    case 4:
+                        try {
+                            geoData.Geo04.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo03  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    case 5:
+                        try {
+                            geoData.Geo05.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo03  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    case 6:
+                        try {
+                            geoData.Geo06.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo03  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    case 7:
+                        try {
+                            geoData.Geo07.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo03  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    case 8:
+                        try {
+                            geoData.Geo08.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo03  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    case 9:
+                        try {
+                            geoData.Geo09.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo03  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                        break;
+                    default:
+                        try {
+                            geoData.Geo10.features.forEach(async (element) => {
+                                tmp.id = element.id;
+                                tmp.location.index = element.location.index;
+                                tmp.location.date = element.location.date;
+                                tmp.location.type = element.location.type;
+                                element.coordinates.forEach(coordinates => {
+                                    tmp.location.coordinates = coordinates.slice();
+                                });
+                                console.log(await Geolocations(tmp).save());
+                            });
+                        }
+                        catch (exception) {
+                            console.error(`Geo03  ${exception}\n`);
+                            res.status(404).send('\n');
+                        }
+                }
+            } else {
+                res.status(404).send(`Doesn't exist\n`);
+            }
+        } catch (exception) {
+            console.error(`Error get()  ${exception}\n`);
+            res.status(404).send('\n');
+        }
+    } else {
+        res.status(404).send(`Invalid id: ${req.params.id}\n`);
+    }
+});
+// router.get('/geolocation/:userId', (req, res) => {});
 module.exports = router;
