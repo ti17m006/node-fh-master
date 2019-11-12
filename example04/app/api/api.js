@@ -95,8 +95,8 @@ router.post('/geolocation/:workerId', async (req, res) => {
     let tmp =
     {
         workerId: Number,
-        location:[]
-        
+        location: []
+
     };
     if (_id > 0) {
         try {
@@ -108,9 +108,10 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         try {
                             geoData.Geo01.features.forEach(e => {
                                 tmp.location.push(e.geometry);
+                                tmp.location.coordinates = e.geometry.coordinates.slice();
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo01  ${exception}\n`);
@@ -123,7 +124,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo02  ${exception}\n`);
@@ -136,7 +137,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -149,7 +150,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -162,7 +163,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -175,7 +176,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -188,7 +189,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -201,7 +202,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -214,7 +215,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -227,7 +228,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
                                 tmp.location.push(e.geometry);
                             });
                             console.log(await Geolocations(tmp).save());
-                            res.send(tmp + '\n');
+                            res.send('Ok!\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -246,19 +247,23 @@ router.post('/geolocation/:workerId', async (req, res) => {
     }
 });
 
+router.put('/geolocation/:id', (req, res) => {
+    
+});
+
 router.get('/geolocation-all', async (req, res) => {
-      
-        try {
-            const tmp = await Geolocations.find();
-            if (tmp.length) {
-                tmp.forEach(object => {
-                    console.log(object.location[0].geometry.coordinates);
-                });
-                res.send('Ok \n');
-            }
-        } catch (exception) {
-            console.error(`Error get()  ${exception}\n`);
-            res.status(404).send('\n');
+
+    try {
+        const tmp = await Geolocations.find();
+        if (tmp.length) {
+            tmp.forEach(object => {
+                console.log(object.location[0].geometry.coordinates);
+            });
+            res.send('Ok \n');
         }
+    } catch (exception) {
+        console.error(`Error get()  ${exception}\n`);
+        res.status(404).send('\n');
+    }
 });
 module.exports = router;
