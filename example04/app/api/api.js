@@ -2,8 +2,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 express()
-// .use(express.json())
-.use(bodyParser.json());
+    // .use(express.json())
+    .use(bodyParser.json({ type: 'application/+json' }))
+    .use(bodyParser.urlencoded({ extended: false }));
 const router = express.Router();
 const Joi = require('@hapi/joi');
 const db = require('../database/db_connection');
@@ -221,30 +222,31 @@ router.post('/geolocation/:workerId', async (req, res) => {
 });
 
 router.put('/geolocation/:id', async (req, res) => {
-    console.log(req.body); // TODO: Error - undefined!!!
     const _id = parseInt(req.params.id);
     if (_id > 0) {
-        try {
-            const geolocation = await Geolocations.updateOne(
-                { workerId: _id },
-                {
-                    $inc: {
-                        locationLength: 1
+        geoData.Geo01.features.forEach(async (e) => {
+            try {
+                const geolocation = await Geolocations.updateOne(
+                    { workerId: _id },
+                    {
+                        $inc: {
+                            locationLength: 1 
+                        },
+                        $push: {
+                            location: e.geometry
+                        },
                     },
-                    $push: {
-                        location: geoData.Geo01.features[0].geometry
-                    }
-                },
-                { new: true }
-            );
-            res.send(req.body);
-        } catch {
-            console.error(`Error get()  ${exception}\n`);
-            res.status(404).send('\n');
-        }
+                    { new: true }
+                );   
+            } catch {
+                console.error(`Error get()  ${exception}\n`);
+                res.status(404).send('\n');
+            }
+        });
     } else {
         res.status(404).send(`Invalid id: ${req.params.id}\n`);
     }
+    res.send('Ok\n');
 });
 
 router.get('/geolocation-all', async (req, res) => {
@@ -252,10 +254,6 @@ router.get('/geolocation-all', async (req, res) => {
     try {
         const tmp = await Geolocations.find();
         if (tmp.length) {
-            // tmp.forEach(object => {
-            //     console.log(object);
-            //     console.log(object.location);
-            // });
             res.send(tmp);
         }
     } catch (exception) {
