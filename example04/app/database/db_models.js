@@ -27,16 +27,14 @@ const WorkerModel = {
     username: Username
 }
 const GeolocationModel = {
-    workerId: {
-        type: Number,
-    },
+    workerId: Number,
     location: [
         {
-            date: { type: Date, default: Date.now() },
-            geometry: {
-                type: { type: String, default: 'MultiPoint' },
-                coordinates: [[Number, Number]]
-            }
+            // date: { type: Date, default: Date.now() },
+            // geometry: {
+            //     type: { type: String, default: 'Point' },
+                coordinates: { type: [Number, Number], default: [0, 0] }
+            // }
         }
     ]
 }

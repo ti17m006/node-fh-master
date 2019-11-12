@@ -96,7 +96,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
     {
         workerId: Number,
         location: []
-
     };
     if (_id > 0) {
         try {
@@ -106,10 +105,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                 switch (worker[0].id) {
                     case 1:
                         try {
-                            geoData.Geo01.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                                tmp.location.coordinates = e.geometry.coordinates.slice();
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -120,9 +115,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     case 2:
                         try {
-                            geoData.Geo02.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -133,9 +125,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     case 3:
                         try {
-                            geoData.Geo03.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -146,9 +135,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     case 4:
                         try {
-                            geoData.Geo04.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -159,9 +145,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     case 5:
                         try {
-                            geoData.Geo05.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -172,9 +155,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     case 6:
                         try {
-                            geoData.Geo06.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -185,9 +165,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     case 7:
                         try {
-                            geoData.Geo07.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -198,9 +175,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     case 8:
                         try {
-                            geoData.Geo08.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -211,9 +185,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     case 9:
                         try {
-                            geoData.Geo09.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -224,9 +195,6 @@ router.post('/geolocation/:workerId', async (req, res) => {
                         break;
                     default:
                         try {
-                            geoData.Geo10.features.forEach(e => {
-                                tmp.location.push(e.geometry);
-                            });
                             console.log(await Geolocations(tmp).save());
                             res.send('Ok!\n');
                         }
@@ -247,8 +215,42 @@ router.post('/geolocation/:workerId', async (req, res) => {
     }
 });
 
-router.put('/geolocation/:id', (req, res) => {
-    
+router.put('/geolocation/:id', async (req, res) => {
+    const _id = parseInt(req.params.id);
+    if (_id > 0) {
+        try {
+            console.log(geoData.Geo01.features[0].geometry);
+            const geolocation = await Geolocations.updateOne(
+                { workerId: _id },
+                {
+                    $push: {
+                        location: geoData.Geo01.features[2].geometry
+                    }
+                },
+                { new: true }
+            );
+            res.send('Ok\n');
+        } catch {
+            console.error(`Error get()  ${exception}\n`);
+            res.status(404).send('\n');
+        }
+    } else {
+        res.status(404).send(`Invalid id: ${req.params.id}\n`);
+    }
+    // geoData.Geo01.features.forEach(e => {
+    //     tmp.location.push(e.geometry);
+    // });
+    // tmp.location.forEach(async (e) => {
+    //     console.log(await Geolocations.update(
+    //         { workerId: worker[0].id },
+    //         {
+    //             $push: {
+    //                 e.coordinates
+    //             }
+    //         },
+    //         { new: true }
+    //     ));
+    // });
 });
 
 router.get('/geolocation-all', async (req, res) => {
@@ -257,7 +259,11 @@ router.get('/geolocation-all', async (req, res) => {
         const tmp = await Geolocations.find();
         if (tmp.length) {
             tmp.forEach(object => {
-                console.log(object.location[0].geometry.coordinates);
+                console.log(object);
+                for (let index = 0; index < object.location.length; index++) {
+                    const element = object.location[index].geometry;
+                    console.log(element);
+                }
             });
             res.send('Ok \n');
         }
