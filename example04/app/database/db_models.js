@@ -28,7 +28,7 @@ const WorkerModel = {
 }
 const GeolocationModel = {
     workerId: {
-        type: WorkerModel.id,
+        type: Number,
     },
     location: [
         {

@@ -90,18 +90,12 @@ router.get('/worker/:id', async (req, res) => {
     }
 });
 
-router.post('/geolocation/:userId', async (req, res) => {
-    const _id = parseInt(req.params.userId);
+router.post('/geolocation/:workerId', async (req, res) => {
+    const _id = parseInt(req.params.workerId);
     let tmp =
     {
         workerId: Number,
-        location:[
-            {
-                date: { type: Date, default: Date.now() },
-                type: { type: String, default: 'MultiPoint' },
-                coordinates: [[Number, Number]]
-            }
-        ]
+        location:[]
         
     };
     if (_id > 0) {
@@ -113,23 +107,10 @@ router.post('/geolocation/:userId', async (req, res) => {
                     case 1:
                         try {
                             geoData.Geo01.features.forEach(e => {
-
+                                tmp.location.push(e.geometry);
                             });
-                            console.log(tmp);
-                            console.log(tmp.location);
-                            // console.log(tmp[1].location.coordinates);
-                            // console.log(tmp[1].location.coordinates);
-
-                            // geoData.Geo01.features.forEach(async (element) => {
-                            //     tmp.id = element.id;
-                            //     tmp.location.index = element.location.index;
-                            //     tmp.location.date = element.location.date;
-                            //     tmp.location.type = element.location.type;
-                            //     element.coordinates.forEach(coordinates => {
-                            //         tmp.location.coordinates = coordinates.slice();
-                            //     });
-                            //     console.log(await Geolocations(tmp).save());
-                            // });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo01  ${exception}\n`);
@@ -138,16 +119,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     case 2:
                         try {
-                            geoData.Geo02.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo02.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo02  ${exception}\n`);
@@ -156,16 +132,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     case 3:
                         try {
-                            geoData.Geo03.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo03.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -174,16 +145,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     case 4:
                         try {
-                            geoData.Geo04.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo04.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -192,16 +158,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     case 5:
                         try {
-                            geoData.Geo05.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo05.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -210,16 +171,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     case 6:
                         try {
-                            geoData.Geo06.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo06.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -228,16 +184,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     case 7:
                         try {
-                            geoData.Geo07.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo07.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -246,16 +197,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     case 8:
                         try {
-                            geoData.Geo08.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo08.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -264,16 +210,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     case 9:
                         try {
-                            geoData.Geo09.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo09.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -282,16 +223,11 @@ router.post('/geolocation/:userId', async (req, res) => {
                         break;
                     default:
                         try {
-                            geoData.Geo10.features.forEach(async (element) => {
-                                tmp.id = element.id;
-                                tmp.location.index = element.location.index;
-                                tmp.location.date = element.location.date;
-                                tmp.location.type = element.location.type;
-                                element.coordinates.forEach(coordinates => {
-                                    tmp.location.coordinates = coordinates.slice();
-                                });
-                                console.log(await Geolocations(tmp).save());
+                            geoData.Geo10.features.forEach(e => {
+                                tmp.location.push(e.geometry);
                             });
+                            console.log(await Geolocations(tmp).save());
+                            res.send(tmp + '\n');
                         }
                         catch (exception) {
                             console.error(`Geo03  ${exception}\n`);
@@ -309,5 +245,20 @@ router.post('/geolocation/:userId', async (req, res) => {
         res.status(404).send(`Invalid id: ${req.params.id}\n`);
     }
 });
-// router.get('/geolocation/:userId', (req, res) => {});
+
+router.get('/geolocation-all', async (req, res) => {
+      
+        try {
+            const tmp = await Geolocations.find();
+            if (tmp.length) {
+                tmp.forEach(object => {
+                    console.log(object.location[0].geometry.coordinates);
+                });
+                res.send('Ok \n');
+            }
+        } catch (exception) {
+            console.error(`Error get()  ${exception}\n`);
+            res.status(404).send('\n');
+        }
+});
 module.exports = router;
