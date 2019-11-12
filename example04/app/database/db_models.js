@@ -28,6 +28,7 @@ const WorkerModel = {
 }
 const GeolocationModel = {
     workerId: Number,
+    locationLength: {type: Number, default: 0 },
     location: [
         {
             // date: { type: Date, default: Date.now() },

@@ -1,6 +1,9 @@
 /** router */
 const express = require('express');
-express().use(express.json());
+const bodyParser = require('body-parser');
+express()
+// .use(express.json())
+.use(bodyParser.json());
 const router = express.Router();
 const Joi = require('@hapi/joi');
 const db = require('../database/db_connection');
@@ -95,6 +98,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
     let tmp =
     {
         workerId: Number,
+        locationLength: Number,
         location: []
     };
     if (_id > 0) {
@@ -102,6 +106,7 @@ router.post('/geolocation/:workerId', async (req, res) => {
             const worker = await Workers.find({ id: _id });
             if (worker.length) {
                 tmp.workerId = worker[0].id;
+                tmp.locationLength = 0;
                 switch (worker[0].id) {
                     case 1:
                         try {
@@ -216,20 +221,23 @@ router.post('/geolocation/:workerId', async (req, res) => {
 });
 
 router.put('/geolocation/:id', async (req, res) => {
+    console.log(req.body); // TODO: Error - undefined!!!
     const _id = parseInt(req.params.id);
     if (_id > 0) {
         try {
-            console.log(geoData.Geo01.features[0].geometry);
             const geolocation = await Geolocations.updateOne(
                 { workerId: _id },
                 {
+                    $inc: {
+                        locationLength: 1
+                    },
                     $push: {
-                        location: geoData.Geo01.features[2].geometry
+                        location: geoData.Geo01.features[0].geometry
                     }
                 },
                 { new: true }
             );
-            res.send('Ok\n');
+            res.send(req.body);
         } catch {
             console.error(`Error get()  ${exception}\n`);
             res.status(404).send('\n');
@@ -237,20 +245,6 @@ router.put('/geolocation/:id', async (req, res) => {
     } else {
         res.status(404).send(`Invalid id: ${req.params.id}\n`);
     }
-    // geoData.Geo01.features.forEach(e => {
-    //     tmp.location.push(e.geometry);
-    // });
-    // tmp.location.forEach(async (e) => {
-    //     console.log(await Geolocations.update(
-    //         { workerId: worker[0].id },
-    //         {
-    //             $push: {
-    //                 e.coordinates
-    //             }
-    //         },
-    //         { new: true }
-    //     ));
-    // });
 });
 
 router.get('/geolocation-all', async (req, res) => {
@@ -258,14 +252,11 @@ router.get('/geolocation-all', async (req, res) => {
     try {
         const tmp = await Geolocations.find();
         if (tmp.length) {
-            tmp.forEach(object => {
-                console.log(object);
-                for (let index = 0; index < object.location.length; index++) {
-                    const element = object.location[index].geometry;
-                    console.log(element);
-                }
-            });
-            res.send('Ok \n');
+            // tmp.forEach(object => {
+            //     console.log(object);
+            //     console.log(object.location);
+            // });
+            res.send(tmp);
         }
     } catch (exception) {
         console.error(`Error get()  ${exception}\n`);
