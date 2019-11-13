@@ -1,10 +1,5 @@
 /** router */
 const express = require('express');
-const bodyParser = require('body-parser');
-express()
-    // .use(express.json())
-    .use(bodyParser.json({ type: 'application/+json' }))
-    .use(bodyParser.urlencoded({ extended: false }));
 const router = express.Router();
 const Joi = require('@hapi/joi');
 const db = require('../database/db_connection');
