@@ -10,5 +10,5 @@ const app = require('express')()
         res.send('index \n');
     })
     .listen(PORT, () => {
-        console.log(`Listening on port ${PORT}...`);        
+        console.log(`Listening on port ${PORT}...`);
     });
