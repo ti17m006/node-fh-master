@@ -5,5 +5,15 @@ const Id = {
     required: true
 }
 const FullName = {
-	type: String
+	type: String,
+	minlen: 4,
+	maxlen: 255,
+	required: true
 }
+const Username = {
+	type: String.
+	minlen: 4,
+	maxlen: 255,
+	required: true
+}
+
