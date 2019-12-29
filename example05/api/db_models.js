@@ -16,4 +16,7 @@ const Username = {
 	maxlen: 255,
 	required: true
 }
+const ManagerModel = {}
+const WorkerModel = {}
+const GeolocationModel = {}
 
