@@ -11,7 +11,14 @@ const FullName = {
 	required: true
 }
 const Username = {
-	type: String.
+	type: String,
+	minlen: 4,
+	maxlen: 255,
+	unique: true,
+	required: true
+}
+const Password = {
+	type: String,
 	minlen: 4,
 	maxlen: 255,
 	required: true
@@ -19,12 +26,14 @@ const Username = {
 const ManagerModel = {	
 	id: Id,
 	fullname: FullName,
-	username: Username
+	username: Username,
+	password: Password
 }
 const WorkerModel = {
 	id: Id,
 	fullname: FullName,
-	username: Username
+	username: Username,
+	password: Password
 }
 const GeolocationModel = {
 	workerId: Number,
@@ -42,4 +51,4 @@ const GeolocationModel = {
 }
 module.exports.Manager = ManagerModel;
 module.exports.Worker = WorkerModel;
-module.expostrs.Geolocation = GeolocationModel;
+module.exports.Geolocation = GeolocationModel;

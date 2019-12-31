@@ -8,7 +8,7 @@ class Database {
 	constructor() {
 		mongoose.connect(dblink,
 		{
-			useNewUrlParse: true,
+			useNewUrlParser: true,
 			useUnifiedTopology: true
 		})
 		.then(() => { console.log('Successfully connected to a db\n'); })

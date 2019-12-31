@@ -15,9 +15,10 @@ const Geolocations = db.createGeolocation();
 
 router.post('/manager/create', (req, res) => {
     managersData.forEach(async (manager) => {
-        if (Joi.validate(manager, schemas.JoiManager).error) {
-            console.error(`my-error: ${user.error.details[0].messages}`);
-            res.status(404).send(user.error.details[0].messages);
+        let check = Joi.validate(manager, schemas.JoiManager);
+        if (check.error) {
+            console.error(`my-error: ${check.error.details[0].messages}`);
+            res.status(404).send(check.error.details[0].messages);
             return;
         } else {
             try {
@@ -53,9 +54,10 @@ router.get('/manager/:id', async (req, res) => {
 
 router.post('/worker/create', (req, res) => {
     workersData.forEach(async (worker) => {
-        if (Joi.validate(worker, schemas.JoiWorker).error) {
-            console.error(`my-error: ${user.error.details[0].messages}`);
-            res.status(404).send(user.error.details[0].messages);
+        let check = Joi.validate(worker, schemas.JoiWorker);
+        if (check.error) {
+            console.error(`my-error: ${check.error.details[0].messages}`);
+            res.status(404).send(check.error.details[0].messages);
             return;
         } else {
             try {
