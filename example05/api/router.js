@@ -25,6 +25,8 @@ router.post('/manager/register', async (req, res) => {
 		res.status(400).send(`Error ${check.error}`);
 	} else {
 		try {
+			// https://www.npmjs.com/package/bcrypt
+			// const saltRounds = 10; is recommended
 			const salt = await bcrypt.genSalt(10);
 			const local_manager = {
 				id: req.body.id,
