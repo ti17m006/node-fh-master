@@ -44,7 +44,21 @@ router.post('/manager/register', async (req, res) => {
 });
 
 router.post('/manager/login', async (req, res) => {
-
+	const existing = await Managers.findOne({ username: req.body.username });
+	const check = Joi.validate(req.body, schemas.JoiManagerLogin);
+	if (check.error) {
+		console.error(`manager error: ${check.error}`);
+		res.status(400).send(`Error ${check.error}`);
+	}
+	if (!existing) {
+		console.log('User does not exist');
+		res.send('User does not exist');
+	} 
+	if (await bcrypt.compare(req.body.password, existing.password)) {
+		res.send('All good');
+	} else {
+		res.send('Invalid password');
+	}
 });
 
 module.exports = router;
