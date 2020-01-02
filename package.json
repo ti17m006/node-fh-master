@@ -8,6 +8,7 @@
     "bcrypt": "^3.0.7",
     "express": "^4.17.1",
     "json-to-js": "^1.0.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.7",
     "npm": "^6.13.4"
   },
