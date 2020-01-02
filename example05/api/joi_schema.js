@@ -12,5 +12,3 @@ module.exports.JoiWorker = Joi.object({
     password: Joi.string().min(4).max(255).required()
 });
 module.exports.JoiManagerLogin = Joi.object({});
-error
-error 2 
