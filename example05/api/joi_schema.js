@@ -13,3 +13,4 @@ module.exports.JoiWorker = Joi.object({
 });
 module.exports.JoiManagerLogin = Joi.object({});
 error
+error 2 
