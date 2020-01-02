@@ -55,7 +55,7 @@ router.post('/manager/login', async (req, res) => {
 		res.send('User does not exist');
 	} 
 	if (await bcrypt.compare(req.body.password, existing.password)) {
-		res.send('All good');
+		res.send(existing);
 	} else {
 		res.send('Invalid password');
 	}
