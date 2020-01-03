@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const schemas = require('./joi_schema');
 const db = require('./db_connection');
@@ -44,19 +45,27 @@ router.post('/manager/register', async (req, res) => {
 });
 
 router.post('/manager/login', async (req, res) => {
+<<<<<<< HEAD
 	const existing = await Managers.findOne({ username: req.body.username });
 
+=======
+	const payload = await Managers.findOne({ username: req.body.username });
+>>>>>>> refs/remotes/origin/master
 	const check = Joi.validate(req.body, schemas.JoiManagerLogin);
 	if (check.error) {
 		console.error(`manager error: ${check.error}`);
 		res.status(400).send(`Error ${check.error}`);
 	}
-	if (!existing) {
+	if (!payload) {
 		console.log('User does not exist');
 		res.send('User does not exist');
 	} 
-	if (await bcrypt.compare(req.body.password, existing.password)) {
-		res.send(existing);
+	if (await bcrypt.compare(req.body.password, payload.password)) {
+		let t = jwt.sign({
+			id : payload.id,
+			username : payload.username
+		}, 'managerPrivateKey');
+		res.header('jwt-manager', t).send(payload);
 	} else {
 		res.send('Invalid password');
 	}
