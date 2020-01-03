@@ -45,12 +45,7 @@ router.post('/manager/register', async (req, res) => {
 });
 
 router.post('/manager/login', async (req, res) => {
-<<<<<<< HEAD
-	const existing = await Managers.findOne({ username: req.body.username });
-
-=======
 	const payload = await Managers.findOne({ username: req.body.username });
->>>>>>> refs/remotes/origin/master
 	const check = Joi.validate(req.body, schemas.JoiManagerLogin);
 	if (check.error) {
 		console.error(`manager error: ${check.error}`);
