@@ -13,6 +13,12 @@ const Managers = db.createCollectionManager();
 const Workers = db.createCollectionWorker();
 const Geolocation = db.createCollectionGeolocation();
 
+function signManager(payload) {
+	return jwt.sign({
+		id: payload.id,
+		username: payload.username
+	}, 'managerPrivateKey');
+}
 
 router.post('/manager/register', async (req, res) => {
 	const existing = await Managers.findOne({ username: req.body.username });
@@ -54,16 +60,24 @@ router.post('/manager/login', async (req, res) => {
 	if (!payload) {
 		console.log('User does not exist');
 		res.send('User does not exist');
-	} 
+	}
 	if (await bcrypt.compare(req.body.password, payload.password)) {
-		let t = jwt.sign({
-			id : payload.id,
-			username : payload.username
-		}, 'managerPrivateKey');
-		res.header('jwt-manager', t).send(payload);
+		res.header('jwt-manager', signManager(payload)).send(payload);
 	} else {
 		res.send('Invalid password');
 	}
+});
+
+router.get('/manager/current', async (req, res) => {
+	if (!req.header('jwt-manager')) {
+		res.status(401).send('Empty token');
+	}
+	try {
+		res.send(jwt.verify(req.header('jwt-manager'), 'managerPrivateKey')); 
+	} catch (exception) {
+		res.status(400).send('Invalid token');
+	}
+	res.send();
 });
 
 module.exports = router;
