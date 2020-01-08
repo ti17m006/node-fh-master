@@ -20,12 +20,6 @@ function signManager(payload) {
 	}, 'managerPrivateKey');
 }
 
-function signWorker(payload) {
-	return jwt.sign({
-		id: payload.id,
-		username: payload.username
-	}, 'workerPrivateKey');
-}
 
 router.post('/manager/register', async (req, res) => {
 	const existing = await Managers.findOne({ username: req.body.username });
@@ -87,6 +81,14 @@ router.get('/manager/current', async (req, res) => {
 	res.send();
 });
 
+
+function signWorker(payload) {
+	return jwt.sign({
+		id: payload.id,
+		username: payload.username
+	}, 'workerPrivateKey');
+}
+
 router.post('/worker/register', async (req, res) => {
 	const existing = await Workers.findOne({ username: req.body.username });
 	if (existing) {
@@ -115,7 +117,7 @@ router.post('/worker/register', async (req, res) => {
 });
 
 router.post('/worker/login', async (req, res) => {
-	const payload = await Managers.findOne({ username: req.body.username });
+	const payload = await Workers.findOne({ username: req.body.username });
 	const check = Joi.validate(req.body, schemas.JoiManagerLogin);
 	if (check.error) {
 		console.error(`manager error: ${check.error}`);
@@ -126,18 +128,18 @@ router.post('/worker/login', async (req, res) => {
 		res.send('User does not exist');
 	}
 	if (await bcrypt.compare(req.body.password, payload.password)) {
-		res.header('jwt-manager', signManager(payload)).send(payload);
+		res.header('jwt-worker', signWorker(payload)).send(payload);
 	} else {
 		res.send('Invalid password');
 	}
 })
 
 router.get('/worker/current', async (req, res) => {
-	if (!req.header('jwt-manager')) {
+	if (!req.header('jwt-worker')) {
 		res.status(401).send('Empty token');
 	}
 	try {
-		res.send(jwt.verify(req.header('jwt-manager'), 'managerPrivateKey'));
+		res.send(jwt.verify(req.header('jwt-worker'), 'workerPrivateKey'));
 	} catch (exception) {
 		res.status(400).send('Invalid token');
 	}
