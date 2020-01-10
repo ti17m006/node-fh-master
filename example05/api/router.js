@@ -110,14 +110,11 @@ router.post('/worker/register', async (req, res) => {
 				password: await bcrypt.hash(req.body.password, salt)
 			};
 			const local_geolocation = {
-				id: req.body.id,
-				location_length,
-				location = new Array()
-			};
-			
+				id: req.body.id
+			};			
 			const workers = await Workers(local_worker).save()
-			const init_loc = await Geolocation(local_worker).save()
-			console.log(`${workers} \n ${init_loc} \n`);
+			const init_loc = await Geolocation(local_geolocation).save()
+			console.log(`${workers} \n${init_loc} \n`);
 			res.send(`Worker successfully initialised.`);
 		} catch (exception) {
 			console.error(`Error save() ${exception}\n`);
