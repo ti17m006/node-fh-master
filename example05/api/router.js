@@ -112,7 +112,7 @@ router.post('/worker/register', async (req, res) => {
 			const local_geolocation = {
 				id: req.body.id,
 				location_length,
-				location = []
+				location = new Array()
 			};
 			
 			const workers = await Workers(local_worker).save()
