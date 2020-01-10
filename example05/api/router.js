@@ -102,16 +102,23 @@ router.post('/worker/register', async (req, res) => {
 	} else {
 		try {
 			const salt = await bcrypt.genSalt(10);
+
 			const local_worker = {
 				id: req.body.id,
 				fullname: req.body.fullname,
 				username: req.body.username,
 				password: await bcrypt.hash(req.body.password, salt)
 			};
+			const local_geolocation = {
+				id: req.body.id,
+				location_length,
+				location = []
+			};
+			
 			const workers = await Workers(local_worker).save()
 			const init_loc = await Geolocation(local_worker).save()
-			console.log();
-			res.send(`Worker successfully saved.`);
+			console.log(`${workers} \n ${init_loc} \n`);
+			res.send(`Worker successfully initialised.`);
 		} catch (exception) {
 			console.error(`Error save() ${exception}\n`);
 		}
@@ -148,8 +155,7 @@ router.get('/worker/current', async (req, res) => {
 	res.send();
 });
 
-router.put('/worker/location', async (req, res) => {
-
-});
+// router.put('/worker/location', async (req, res) => {
+// });
 
 module.exports = router;
