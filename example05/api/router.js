@@ -108,7 +108,9 @@ router.post('/worker/register', async (req, res) => {
 				username: req.body.username,
 				password: await bcrypt.hash(req.body.password, salt)
 			};
-			console.log(await Workers(local_worker).save());
+			const workers = await Workers(local_worker).save()
+			const init_loc = await Geolocation(local_worker).save()
+			console.log();
 			res.send(`Worker successfully saved.`);
 		} catch (exception) {
 			console.error(`Error save() ${exception}\n`);
