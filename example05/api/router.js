@@ -110,12 +110,12 @@ router.post('/worker/register', async (req, res) => {
 				password: await bcrypt.hash(req.body.password, salt)
 			};
 			const local_geolocation = {
-				id: parseInt(req.body.id)
-			};			
-			const workers = await Workers(local_worker).save()
-			const init_loc = await Geolocation(local_geolocation).save()
-			console.log(`${workers} \n${init_loc} \n`);
-			res.send(`Worker successfully initialised.`);
+				workerId: parseInt(req.body.id)
+			};
+			const workers = await Workers(local_worker).save();
+			const init_loc = await Geolocation(local_geolocation).save();
+			// console.log(`${workers} \n${init_loc} \n`);
+			res.send(`Worker successfully initialised.\n${workers}\n${init_loc}\n`);
 		} catch (exception) {
 			console.error(`Error save() ${exception}\n`);
 		}
@@ -152,8 +152,36 @@ router.get('/worker/current', async (req, res) => {
 	res.send();
 });
 
-router.put('/worker/location', async (req, res) => {
-
+router.put('/worker/location/:id', async (req, res) => {
+	if (!req.header('jwt-worker')) {
+		res.status(401).send('Empty token');
+	}
+	try {
+		if (jwt.verify(req.header('jwt-worker'), 'workerPrivateKey')) {
+			const local_geolocation = await Geolocation.updateOne(
+				{
+					workerId: parseInt(req.params.id)
+				},
+				{
+					$inc: {
+						locationLength: 1
+					},
+					$push: {
+						location: req.body
+					}
+				},
+				{
+					new: true
+				}
+			);
+		} else {
+			res.status(400).send('Invalid token');
+		}
+		res.send("Geolocation successfully updated.\n");
+	} catch (exception) {
+		res.status(400).send('Invalid token');
+	}
+	res.send();
 });
 
 module.exports = router;
