@@ -138,7 +138,7 @@ router.post('/worker/login', async (req, res) => {
 	} else {
 		res.send('Invalid password');
 	}
-})
+});
 
 router.get('/worker/current', async (req, res) => {
 	if (!req.header('jwt-worker')) {
