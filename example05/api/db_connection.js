@@ -1,7 +1,7 @@
 /** DB Connection */
 const localhost = '127.0.0.1:27017';
 const database = 'example05';
-const mongoatlas = `mongodb+srv://master-student:1234@cluster0-eeu87.mongodb.net/test?retryWrites=true&w=majority`;
+const mongoatlas = process.env.MONGODB_URL;
 const dblink = `mongodb://${localhost}/${database}` || mongoatlas;
 const Model= require('./db_models');
 const mongoose = require('mongoose');
