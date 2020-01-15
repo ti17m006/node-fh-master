@@ -1,6 +1,8 @@
 const PORT = process.env.PORT || 8000;
+const compression = require('compression');
 const router = require('./api/router');
 const app = require('express')()
+    .use(compression())
     .use(require('express').json())
     .use('/api', router)
     .post('/', (req, res) => {
@@ -9,7 +11,8 @@ const app = require('express')()
         res.send(`${req.body}\n`); // [object Object]
     })
     .get('/', (req, res) => {
-        res.send('index \n');
+        const message = 'index';
+        res.send(message.repeat(10));
     })
     .listen(PORT, () => {
         console.log(`Listening on port ${PORT}...`);
