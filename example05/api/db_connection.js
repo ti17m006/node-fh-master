@@ -2,11 +2,12 @@
 const localhost = '127.0.0.1:27017';
 const database = 'example05';
 const dblink = `mongodb://${localhost}/${database}`;
+const mongoatlas = 'mongo "mongodb+srv://cluster0-eeu87.mongodb.net/test"  --username master-student';
 const Model= require('./db_models');
 const mongoose = require('mongoose');
 class Database {
 	constructor() {
-		mongoose.connect(dblink,
+		mongoose.connect(mongoatlas,
 		{
 			useNewUrlParser: true,
 			useUnifiedTopology: true
