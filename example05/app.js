@@ -11,7 +11,7 @@ const app = require('express')()
         res.send(`${req.body}\n`); // [object Object]
     })
     .get('/', (req, res) => {
-        const message = 'index';
+        const message = 'Index page -> Working\n';
         res.send(message.repeat(10));
     })
     .listen(PORT, () => {
