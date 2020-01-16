@@ -12,7 +12,7 @@ const app = require('express')()
     })
     .get('/', (req, res) => {
         const message = 'Index page -> Working\n';
-        const repetition = 1000000;
+        const repetition = 1;//000000;
         res.send(message.repeat(repetition));
     })
     .listen(PORT, () => {
