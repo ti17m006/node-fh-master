@@ -5,12 +5,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const schemas = require('./joi_schema');
-//const db = require('./db_connection').Managers;
-
-// db;
-// const Managers = db.createCollectionManager();
-
-
 
 function signManager(payload) {
     return jwt.sign({

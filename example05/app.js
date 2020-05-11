@@ -20,8 +20,7 @@ const app = require('express')()
     .use('/api/manager', manager)
     .use('/api/worker', worker)
     .post('/', (req, res) => {
-        // REMINDER !!!
-        console.log(req.body); // Displays value
+        console.log(req.body);
         res.send(req.body);
     })
     .get('/', (req, res) => {
