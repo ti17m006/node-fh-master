@@ -77,7 +77,6 @@ router.get(`/current`, async (req, res) => {
     } catch (exception) {
         res.status(400).send('Invalid token');
     }
-    res.send();
 });
 
 router.post(`/register-worker`, async (req, res) => {
@@ -145,11 +144,64 @@ router.get('/get-worker', async (req, res) => {
     catch (exception) {
         res.status(400).send(`Invalid token: ${exception}`);
     }
-    res.send();
 });
 
-router.patch('/update-worker', async () => { });
+router.put('/update-worker', async (req, res) => {
+    try {
+        if (!req.header('jwt-manager')) {
+            res.status(401).send('Empty token');
+        }
+        if (!jwt.verify(req.header('jwt-manager'), 'manager_PrivateKey')) {
+            res.status(401).send('invalid token');
+        }
+        const local_worker = await Workers.findOne({ id: req.query.id });
+        if (!local_worker) {
+            console.log('local_worker');
+            res.send('Worker not found');
+        }
+        if (await bcrypt.compare(req.query.old_password, local_worker.password)) {
+            const salt = await bcrypt.genSalt(10);
+            const new_password = await (await bcrypt.hash(req.query.new_password, salt)).toString();
+            const output = await Workers.findOneAndUpdate(
+                {
+                    id: req.query.id,
+                    "password": new_password
+                });
+            console.log(output);
+            res.send(output);
+        }
 
-router.delete('/delete-worker', async () => { });
+    }
+    catch (exception) {
+        res.status(400).send(`${exception}`);
+    }
+});
+
+router.delete('/delete-worker', async (req, res) => {
+    try {
+        if (!req.header('jwt-manager')) {
+            res.status(401).send('Empty token');
+        }
+        if (!jwt.verify(req.header('jwt-manager'), 'manager_PrivateKey')) {
+            res.status(401).send('invalid token');
+        }
+        const local_worker = await Workers.findOne({ id: req.query.id });
+        if (!local_worker) {
+            console.log('local_worker');
+            res.send('Worker not found');
+        }
+        if (local_worker) {
+            await Workers.findOneAndDelete(
+                {
+                    id: req.query.id
+                });
+            console.log('Worker deleted');
+            res.send('Worker deleted');
+        }
+    }
+    catch (exception) {
+        res.status(400).send(`${exception}`);
+    }
+});
 
 module.exports = router;
