@@ -15,12 +15,12 @@ function signWorker(payload) {
 }
 
 router.post(`/register`, async (req, res) => {
-	const existing = await Workers.findOne({ username: req.body.username });
+	const existing = await Workers.findOne({ username: req.query.username });
 	if (existing) {
 		console.log('User exists');
 		res.send('User exists');
 	}
-	const check = Joi.validate(req.body, schemas.JoiWorker);
+	const check = Joi.validate(req.query, schemas.JoiWorker);
 	if (check.error) {
 		console.error(`worker registration error: ${check.error}`);
 		res.status(400).send(`Error ${check.error}`);
@@ -29,13 +29,13 @@ router.post(`/register`, async (req, res) => {
 			const salt = await bcrypt.genSalt(10);
 
 			const local_worker = {
-				id: parseInt(req.body.id),
-				fullname: req.body.fullname,
-				username: req.body.username,
-				password: await bcrypt.hash(req.body.password, salt)
+				id: parseInt(req.query.id),
+				fullname: req.query.fullname,
+				username: req.query.username,
+				password: await bcrypt.hash(req.query.password, salt)
 			};
 			const local_geolocation = {
-				workerId: parseInt(req.body.id)
+				workerId: parseInt(req.query.id)
 			};
 			const workers = await Workers(local_worker).save();
 			const init_loc = await Geolocation(local_geolocation).save();
@@ -48,8 +48,8 @@ router.post(`/register`, async (req, res) => {
 });
 
 router.post(`/login`, async (req, res) => {
-	const payload = await Workers.findOne({ username: req.body.username });
-	const check = Joi.validate(req.body, schemas.JoiManagerLogin);
+	const payload = await Workers.findOne({ username: req.query.username });
+	const check = Joi.validate(req.query, schemas.JoiManagerLogin);
 	if (check.error) {
 		console.error(`manager error: ${check.error}`);
 		res.status(400).send(`Error ${check.error}`);
@@ -58,7 +58,7 @@ router.post(`/login`, async (req, res) => {
 		console.log('User does not exist');
 		res.send('User does not exist');
 	}
-	if (await bcrypt.compare(req.body.password, payload.password)) {
+	if (await bcrypt.compare(req.query.password, payload.password)) {
 		res.header('jwt-worker', signWorker(payload)).send(payload);
 	} else {
 		res.send('Invalid password');
@@ -92,7 +92,7 @@ router.put(`/location/:id`, async (req, res) => {
 						locationLength: 1
 					},
 					$push: {
-						location: req.body
+						location: req.query
 					}
 				},
 				{
