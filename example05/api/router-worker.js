@@ -6,18 +6,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const schemas = require('./joi_schema');
-const db = require('./db_connection');
-db;
-const Managers = db.createCollectionManager();
 
 function signWorker(payload) {
 	return jwt.sign({
 		id: payload.id,
 		username: payload.username
-	}, 'workerPrivateKey');
+	}, 'worker_PrivateKey');
 }
 
-router.post('/worker/register', async (req, res) => {
+router.post(`/register`, async (req, res) => {
 	const existing = await Workers.findOne({ username: req.body.username });
 	if (existing) {
 		console.log('User exists');
@@ -50,7 +47,7 @@ router.post('/worker/register', async (req, res) => {
 	}
 });
 
-router.post('/worker/login', async (req, res) => {
+router.post(`/login`, async (req, res) => {
 	const payload = await Workers.findOne({ username: req.body.username });
 	const check = Joi.validate(req.body, schemas.JoiManagerLogin);
 	if (check.error) {
@@ -68,7 +65,7 @@ router.post('/worker/login', async (req, res) => {
 	}
 });
 
-router.get('/worker/current', async (req, res) => {
+router.get(`/current`, async (req, res) => {
 	if (!req.header('jwt-worker')) {
 		res.status(401).send('Empty token');
 	}
@@ -80,7 +77,7 @@ router.get('/worker/current', async (req, res) => {
 	res.send();
 });
 
-router.put('/worker/location/:id', async (req, res) => {
+router.put(`/location/:id`, async (req, res) => {
 	if (!req.header('jwt-worker')) {
 		res.status(401).send('Empty token');
 	}
@@ -111,3 +108,5 @@ router.put('/worker/location/:id', async (req, res) => {
 	}
 	res.send();
 });
+
+module.exports = router;
