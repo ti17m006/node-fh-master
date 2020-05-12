@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const schemas = require('./joi_schema');
-const Model = require('./db_models');
-
-const Managers = mongoose.model('Manager', new mongoose.Schema(Model.Manager));
-const Workers = mongoose.model('Worker', new mongoose.Schema(Model.Worker));
-const Geolocation = mongoose.model('Geolocation', new mongoose.Schema(Model.Geolocation));
+const Managers = require('./db_connection').Managers;
+const Workers = require('./db_connection').Workers;
+const Geolocation = require('./db_connection').Geolocation;
 
 function signManager(payload) {
     return jwt.sign({
@@ -50,22 +47,27 @@ router.post(`/register`, async (req, res) => {
 });
 
 router.post(`/login`, async (req, res) => {
-    const payload = await Managers.findOne({ username: req.query.username });
-    const check = Joi.validate(req.query, schemas.JoiManagerLogin);
-    if (check.error) {
-        console.error(`manager error: ${check.error}`);
-        res.status(400).send(`Error ${check.error}`);
+    try {
+        const payload = await Managers.findOne({ username: req.query.username });
+        const check = Joi.validate(req.query, schemas.JoiManagerLogin);
+        if (check.error) {
+            console.error(`manager error: ${check.error}`);
+            res.status(400).send(`Error ${check.error}`);
+        }
+        if (!payload) {
+            console.log('User does not exist');
+            res.send('User does not exist');
+        }
+        if (await bcrypt.compare(req.query.password, payload.password)) {
+            res.header('manager_PrivateKey', signManager(payload)).send(payload);
+            console.log('Login successfull');
+        } else {
+            res.send('Invalid password');
+        }
+    } catch (exception) {
+        console.error(exception);
     }
-    if (!payload) {
-        console.log('User does not exist');
-        res.send('User does not exist');
-    }
-    if (await bcrypt.compare(req.query.password, payload.password)) {
-        res.header('manager_PrivateKey', signManager(payload)).send(payload);
-        console.log('Login successfull');
-    } else {
-        res.send('Invalid password');
-    }
+
 });
 
 router.get(`/current`, async (req, res) => {

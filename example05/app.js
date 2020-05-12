@@ -5,14 +5,8 @@ const router = express.Router();
 const manager = require('./api/router-manager');
 const worker = require('./api/router-worker');
 const db = require('./api/db_connection');
-
 db;
-db.createCollectionManager();
-db.createCollectionWorker();
-db.createCollectionGeolocation();
-
 const compression = require('compression');
-
 const app = require('express')()
     .use(compression())
     .use(require('express').json())
@@ -31,5 +25,4 @@ const app = require('express')()
     .listen(PORT, () => {
         console.log(`Listening on port ${PORT}...`);
     });
-
 module.exports = app;

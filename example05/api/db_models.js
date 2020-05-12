@@ -1,8 +1,8 @@
 /** DB Models */
 const Id = {
-    type: Number, 
-    min: 1, 
-    required: true
+	type: Number,
+	min: 1,
+	required: true
 }
 const FullName = {
 	type: String,
@@ -23,7 +23,7 @@ const Password = {
 	maxlen: 255,
 	required: true
 }
-const ManagerModel = {	
+const ManagerModel = {
 	id: Id,
 	fullname: FullName,
 	username: Username,
@@ -36,19 +36,16 @@ const WorkerModel = {
 	password: Password
 }
 const GeolocationModel = {
-	workerId: Number,
+	workerId: Id,
 	locationLength: {
 		type: Number,
 		default: 0
 	},
 	location: [
-	{
-		coordinates: {
-			type: [Number, Number], default: [0, 0]
-		}
-	}
+		[String]
 	]
 }
+
 module.exports.Manager = ManagerModel;
 module.exports.Worker = WorkerModel;
 module.exports.Geolocation = GeolocationModel;
