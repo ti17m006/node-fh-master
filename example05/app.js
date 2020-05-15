@@ -1,5 +1,17 @@
 const PORT = process.env.PORT || 8000;
 
+const http = require('http');
+const https = require('https');
+const filesystem = require('fs');
+
+const privateKey = filesystem.readFileSync('./key.pem');
+const certificate = filesystem.readFileSync('./cert.pem');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate
+}
+
 const express = require('express')
 const router = express.Router();
 const manager = require('./api/router-manager');
@@ -21,8 +33,10 @@ const app = require('express')()
         const message = 'Index page -> Working\n';
         const repetition = 1;//000000;
         res.send(message.repeat(repetition));
-    })
+    });
+
+module.exports = https
+    .createServer(credentials, app)
     .listen(PORT, () => {
         console.log(`Listening on port ${PORT}...`);
     });
-module.exports = app;
