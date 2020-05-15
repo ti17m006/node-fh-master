@@ -35,8 +35,14 @@ const app = require('express')()
         res.send(message.repeat(repetition));
     });
 
+module.exports = app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}...`);
+});
+
+/*
 module.exports = https
     .createServer(credentials, app)
     .listen(PORT, () => {
         console.log(`Listening on port ${PORT}...`);
     });
+*/
