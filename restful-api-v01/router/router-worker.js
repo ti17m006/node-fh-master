@@ -6,8 +6,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const schemas = require('../joi_schema/joi_schema');
-const Workers = require('./db_connection').Workers;
-const Geolocation = require('./db_connection').Geolocation;
+const Workers = require('../database/mogodb_connection').Workers;
+const Geolocation = require('../database/mogodb_connection').Geolocation;
 
 
 function signWorker(payload) {

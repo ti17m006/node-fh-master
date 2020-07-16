@@ -3,7 +3,7 @@
 const mongo_config = require('../config/mongo_config.json').developer;
 const dblink = `mongodb://${mongo_config.server}:${mongo_config.port}/${mongo_config.database}`;
 
-const Model = require('../model/db_models');
+const Model = require('../model/mongo_models');
 const mongoose = require('mongoose');
 
 class Database {
