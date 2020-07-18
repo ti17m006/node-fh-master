@@ -152,7 +152,7 @@ router.get('/get-worker', async (req, res) => {
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
             res.status(401).send(messageToken.invalid);
         }
-        const local_worker_id = parseInt(req.body.id);
+        const local_worker_id = parseInt(req.query.id);
         const local_worker = await Workers.find({ id: local_worker_id });
         if (!local_worker) {
             console.log('local_worker not found');
@@ -160,11 +160,11 @@ router.get('/get-worker', async (req, res) => {
         }
         const local_geoloc = await Geolocation.find({ workerId: local_worker_id });
         const output = `${local_worker} -> ${local_geoloc}`;
-        res.send(output);
         console.log(output);
+        res.send(output);
     }
     catch (exception) {
-        res.status(400).send(`Invalid token: ${exception}`);
+        res.status(400).send(`${exception}`);
     }
 });
 
@@ -176,26 +176,32 @@ router.put('/update-worker', async (req, res) => {
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
             res.status(401).send(messageToken.invalid);
         }
-        const local_worker = await Workers.findOne({ id: req.query.id });
-        if (!local_worker) {
-            console.log('local_worker');
-            res.send('Worker not found');
+        const local_worker = {
+            id: parseInt(req.query.id),
+            old_password: req.body.old_password.toString(),
+            new_password: req.body.new_password.toString()
         }
-        if (await bcrypt.compare(req.query.old_password, local_worker.password)) {
+        const exists = await Workers.findOne({ id: local_worker.id });
+        if (!exists) {
+            console.log('User does not exist');
+            res.send('User does not exist');
+        }
+        if (await bcrypt.compare(local_worker.old_password, exists.password)) {
             const salt = await bcrypt.genSalt(10);
-            const new_password = await (await bcrypt.hash(req.query.new_password, salt)).toString();
-            const output = await Workers.findOneAndUpdate(
-                {
-                    id: req.query.id,
-                    "password": new_password
-                });
+            const new_password = await bcrypt.hash(local_worker.new_password, salt);
+            const output = await Workers.findOneAndUpdate({
+                id: local_worker.id,
+                "password": new_password
+            });
             console.log(output);
             res.send(output);
+        } else {
+            throw 'Password exception';
         }
-
     }
     catch (exception) {
-        res.status(400).send(`${exception}`);
+        console.log(exception);
+        res.status(400).send(`${exception}\n`);
     }
 });
 
