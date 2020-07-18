@@ -63,7 +63,7 @@ router.post(`/login`, async (req, res) => {
         }
         if (await bcrypt.compare(local_manager.password, payload.password)) {
             res.header(privateKey, signManager(payload)).send(payload);
-            console.log('Login successfull');
+            console.log('Login successful');
         } else {
             res.send('Invalid password');
         }
@@ -73,13 +73,29 @@ router.post(`/login`, async (req, res) => {
 });
 
 router.get(`/current`, async (req, res) => {
-    if (!req.header('jwt-manager')) {
-        res.status(401).send('Empty token');
-    }
+    message = [
+        "Empty token",
+        "Invalid token"
+    ];
     try {
-        res.send(jwt.verify(req.header('jwt-manager'), privateKey));
-    } catch (exception) {
-        res.status(400).send('Invalid token');
+        if (!req.header('jwt-manager')) {
+            throw message[0];
+        } else {
+            const verified = jwt.verify(req.header('jwt-manager'), privateKey);
+            if (verified) {
+                console.log('Verification succssessful');
+                res.send(verified);
+            }
+        }
+    }
+    catch (exception) {
+        if (exception === message[0]) {
+            console.log(message[0]);
+            res.status(400).send(message[0]);
+        } else {
+            console.log(message[1]);
+            res.status(400).send(message[1]);
+        }
     }
 });
 
