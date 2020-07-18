@@ -8,11 +8,13 @@ const Managers = require('../database/mogodb_connection').Managers;
 const Workers = require('../database/mogodb_connection').Workers;
 const Geolocation = require('../database/mogodb_connection').Geolocation;
 
+const privateKey = 'manager_PrivateKey'
+
 function signManager(payload) {
     return jwt.sign({
         id: payload.id,
         username: payload.username
-    }, 'manager_PrivateKey');
+    }, privateKey);
 }
 
 router.post(`/register`, async (req, res) => {
@@ -32,8 +34,7 @@ router.post(`/register`, async (req, res) => {
         res.send('User exists');
     } else {
         try {
-            // https://www.npmjs.com/package/bcrypt
-            // const saltRounds = 10; is recommended
+            // https://www.npmjs.com/package/bcrypt saltRounds = 10 recommended
             const salt = await bcrypt.genSalt(10);
             local_manager.password = await bcrypt.hash(local_manager.password, salt);
             await Managers(local_manager).save();
@@ -46,18 +47,22 @@ router.post(`/register`, async (req, res) => {
 
 router.post(`/login`, async (req, res) => {
     try {
-        const payload = await Managers.findOne({ username: req.query.username });
-        const check = Joi.validate(req.query, schemas.JoiManagerLogin);
+        let local_manager = {
+            username: req.body.username.toString(),
+            password: req.body.password.toString()
+        }
+        const check = Joi.validate(local_manager, schemas.JoiManagerLogin);
         if (check.error) {
             console.error(`manager error: ${check.error}`);
             res.status(400).send(`Error ${check.error}`);
         }
+        const payload = await Managers.findOne({ username: local_manager.username });
         if (!payload) {
             console.log('User does not exist');
             res.send('User does not exist');
         }
-        if (await bcrypt.compare(req.query.password, payload.password)) {
-            res.header('manager_PrivateKey', signManager(payload)).send(payload);
+        if (await bcrypt.compare(local_manager.password, payload.password)) {
+            res.header(privateKey, signManager(payload)).send(payload);
             console.log('Login successfull');
         } else {
             res.send('Invalid password');
