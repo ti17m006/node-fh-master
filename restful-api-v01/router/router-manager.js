@@ -208,17 +208,17 @@ router.put('/update-worker', async (req, res) => {
 router.delete('/delete-worker', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            res.status(401).send('Empty token');
+            res.status(401).send(messageToken.empty);
         }
-        if (!jwt.verify(req.header('jwt-manager'), 'manager_PrivateKey')) {
-            res.status(401).send('invalid token');
+        if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
+            res.status(401).send(messageToken.invalid);
         }
-        const local_worker = await Workers.findOne({ id: req.query.id });
+        const local_worker_id = parseInt(req.query.id);
+        const local_worker = await Workers.findOne({ id: local_worker_id });
         if (!local_worker) {
-            console.log('local_worker');
+            console.log(local_worker);
             res.send('Worker not found');
-        }
-        if (local_worker) {
+        } else {
             await Workers.findOneAndDelete(
                 {
                     id: req.query.id
