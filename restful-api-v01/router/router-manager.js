@@ -147,10 +147,10 @@ router.post(`/register-worker`, async (req, res) => {
 router.get('/get-worker', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            res.status(401).send('Empty token');
+            res.status(401).send(messageToken.empty);
         }
-        if (!jwt.verify(req.header('jwt-manager'), 'manager_PrivateKey')) {
-            res.status(401).send('invalid token');
+        if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
+            res.status(401).send(messageToken.invalid);
         }
         const local_worker_id = parseInt(req.body.id);
         const local_worker = await Workers.find({ id: local_worker_id });
