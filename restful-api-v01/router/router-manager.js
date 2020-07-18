@@ -78,7 +78,7 @@ router.get(`/current`, async (req, res) => {
         res.status(401).send('Empty token');
     }
     try {
-        res.send(jwt.verify(req.header('jwt-manager'), 'manager_PrivateKey'));
+        res.send(jwt.verify(req.header('jwt-manager'), privateKey));
     } catch (exception) {
         res.status(400).send('Invalid token');
     }
