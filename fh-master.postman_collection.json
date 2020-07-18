@@ -1,0 +1,898 @@
+{
+	"info": {
+		"_postman_id": "54b537dc-bcec-4018-8d30-69acf325e5a4",
+		"name": "fh-master",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "managersRegister",
+			"item": [
+				{
+					"name": "managerRegister01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"fullname\": \"Alice Martin\",\n    \"username\": \"amartin\",\n    \"password\": \"123abc\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegister02",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2,\n    \"fullname\": \"Patrick Foster\",\n    \"username\": \"pfoster\",\n    \"password\": \"abc123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegister03",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"fullname\": \"Anna Smith\",\n    \"username\": \"asmith\",\n    \"password\": \"123456\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegister04",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"fullname\": \"Jacob Davis\",\n    \"username\": \"jdavis\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "app-init",
+			"item": [
+				{
+					"name": "app-initial",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test\",\n\t\"number\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app-initial",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app-initial-https",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8000/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app-initial-https",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test\",\n\t\"number\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8000/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "managerLogin",
+			"item": [
+				{
+					"name": "managerLogin01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"amartin\",\n    \"password\": \"123abc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerLogin02",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"jdavis\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "managerRegisterWorker",
+			"item": [
+				{
+					"name": "managerRegisterWorker01",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"fullname\": \"Lester Rosenberg\",\n    \"username\": \"joan@sumner.gu\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker02",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2,\n    \"fullname\": \"Shannon Sumner\",\n    \"username\": \"frances@gibbons.ir\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker03",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"fullname\": \"Annie Boyd\",\n    \"username\": \"carol@byers.cx\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker04",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"fullname\": \"Brenda Hale\",\n    \"username\": \"regina@heath.bh\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker05",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 5,\n    \"fullname\": \"Jennifer Keller\",\n    \"username\": \"cathy@jiang.ee\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker06",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 6,\n    \"fullname\": \"Greg Guthrie\",\n    \"username\": \"brett@kenney.mx\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker07",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 7,\n    \"fullname\": \"Dianne Reilly\",\n    \"username\": \"ashley@cain.pk\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker08",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 8,\n    \"fullname\": \"Geoffrey Hines\",\n    \"username\": \"geoffrey@bowers.se\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker09",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 9,\n    \"fullname\": \"Leon Olson\",\n    \"username\": \"audrey@craig.lr\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerRegisterWorker10",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 10,\n    \"fullname\": \"Marianne Padgett\",\n    \"username\": \"vickie@sawyer.tw\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/manager/register-worker",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"register-worker"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "managerCurrent",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt-manager",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFydGluIiwiaWF0IjoxNTk1MDcwMDM3fQ.5Sd1XOlfi6jAv-E8Qb0DtKYaD4oGzUYAHOSYDvTRsPA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/manager/current",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"manager",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "managerGetWorker",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt-manager",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTM5MDB9.7LaGFGeRoPDJhDm2eouxoZArzpIJdsBQPTUGL83naBE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/manager/get-worker/?id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"manager",
+						"get-worker",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "managerUpdateWorker",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "jwt-manager",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"old_password\": \"123456\",\n\t\"new_password\": \"qwerty\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/manager/update-worker?id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"manager",
+						"update-worker"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "managerDeleteWorker",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "jwt-manager",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/manager/delete-worker?id=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"manager",
+						"delete-worker"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "workerLogin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/worker/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"worker",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "workerCurrent",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt-worker",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb2FuQHN1bW5lci5ndSIsImlhdCI6MTU4OTMwNjI5N30.buuAImzOh_nMqXgPo1-aM12EWPZxzLqG8TXtY5x9yNM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/worker/current",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"worker",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "workerGeolocation",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "jwt-worker",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb2FuQHN1bW5lci5ndSIsImlhdCI6MTU4OTMwNjI5N30.buuAImzOh_nMqXgPo1-aM12EWPZxzLqG8TXtY5x9yNM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/worker/location?id=1&coordinates=[16.33, 45.234]",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"worker",
+						"location"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						},
+						{
+							"key": "coordinates",
+							"value": "[16.33, 45.234]"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
