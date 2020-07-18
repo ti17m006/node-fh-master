@@ -4,11 +4,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const schemas = require('../joi_schema/joi_schema');
+const { invalid } = require('@hapi/joi');
 const Managers = require('../database/mogodb_connection').Managers;
 const Workers = require('../database/mogodb_connection').Workers;
 const Geolocation = require('../database/mogodb_connection').Geolocation;
 
 const privateKey = 'manager_PrivateKey'
+
+const messageToken = {
+    empty: "Empty token",
+    invalid: "Invalid token"
+};
 
 function signManager(payload) {
     return jwt.sign({
@@ -73,13 +79,9 @@ router.post(`/login`, async (req, res) => {
 });
 
 router.get(`/current`, async (req, res) => {
-    message = [
-        "Empty token",
-        "Invalid token"
-    ];
     try {
         if (!req.header('jwt-manager')) {
-            throw message[0];
+            throw messageToken.empty;
         } else {
             const verified = jwt.verify(req.header('jwt-manager'), privateKey);
             if (verified) {
@@ -89,12 +91,12 @@ router.get(`/current`, async (req, res) => {
         }
     }
     catch (exception) {
-        if (exception === message[0]) {
-            console.log(message[0]);
-            res.status(400).send(message[0]);
+        if (exception === messageToken.empty) {
+            console.log(messageToken.empty);
+            res.status(400).send(messageToken.empty);
         } else {
-            console.log(message[1]);
-            res.status(400).send(message[1]);
+            console.log(messageToken.invalid);
+            res.status(400).send(messageToken.invalid);
         }
     }
 });
@@ -102,43 +104,43 @@ router.get(`/current`, async (req, res) => {
 router.post(`/register-worker`, async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            res.status(401).send('Empty token');
+            res.status(401).send(messageToken.empty);
         }
-        if (!jwt.verify(req.header('jwt-manager'), 'manager_PrivateKey')) {
-            res.status(401).send('invalid token');
+        if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
+            res.status(401).send(messageToken.invalid);
         }
-        const existing = await Workers.findOne({ username: req.query.username });
-        if (existing) {
+        const local_worker = {
+            id: parseInt(req.body.id),
+            fullname: req.body.fullname.toString(),
+            username: req.body.username.toString(),
+            password: req.body.password.toString()
+        };
+        const check = Joi.validate(local_worker, schemas.JoiWorker);
+        if (check.error) {
+            console.error(`Worker registration error: ${check.error}`);
+            res.status(400).send(`Error ${check.error}`);
+        }
+        const exists = await Workers.findOne({ username: local_worker.username });
+        if (exists) {
             console.log('User exists');
             res.send('User exists');
         }
-        const check = Joi.validate(req.query, schemas.JoiWorker);
-        if (check.error) {
-            console.error(`worker registration error: ${check.error}`);
-            res.status(400).send(`Error ${check.error}`);
-        } else {
-            try {
-                const salt = await bcrypt.genSalt(10);
-
-                const local_worker = {
-                    id: parseInt(req.query.id),
-                    fullname: req.query.fullname,
-                    username: req.query.username,
-                    password: await bcrypt.hash(req.query.password, salt)
-                };
-                const local_geolocation = {
-                    workerId: parseInt(req.query.id)
-                };
-                const workers = await Workers(local_worker).save();
-                const init_loc = await Geolocation(local_geolocation).save();
-                // console.log(`${workers} \n${init_loc} \n`);
-                res.send(`Worker successfully initialised.\n${workers}\n${init_loc}\n`);
-            } catch (exception) {
-                console.error(`Error save() ${exception}\n`);
-            }
+        try {
+            const salt = await bcrypt.genSalt(10);
+            local_worker.password = await bcrypt.hash(local_worker.password, salt);
+            const local_geolocation = {
+                workerId: parseInt(local_worker.id)
+            };
+            const workers = await Workers(local_worker).save();
+            const init_loc = await Geolocation(local_geolocation).save();
+            const messageWorker = `Worker successfully initialised.\n${workers}\n${init_loc}\n`;
+            console.log(messageWorker);
+            res.send(messageWorker);
+        } catch (exception) {
+            console.error(`Error save() ${exception}\n`);
         }
     } catch (exception) {
-        res.status(400).send('Invalid token');
+        res.status(400).send(exception);
     }
 });
 
