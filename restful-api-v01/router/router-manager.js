@@ -16,34 +16,32 @@ function signManager(payload) {
 }
 
 router.post(`/register`, async (req, res) => {
-    // console.log(req);
-    const existing = await Managers.findOne({ username: req.query.username });
-    if (existing) {
-        console.log('User exists');
-        res.send('User exists');
-    }
-    const check = Joi.validate(req.query, schemas.JoiManager);
+    let local_manager = {
+        id: parseInt(req.body.id),
+        fullname: req.body.fullname.toString(),
+        username: req.body.username.toString(),
+        password: req.body.password.toString()
+    };
+    const check = Joi.validate(local_manager, schemas.JoiManager);
     if (check.error) {
         console.error(`manager error: ${check.error}`);
         res.status(400).send(`Error ${check.error}`);
+    }
+    if (await Managers.findOne({ username: local_manager.username })) {
+        console.log('User exists');
+        res.send('User exists');
     } else {
         try {
             // https://www.npmjs.com/package/bcrypt
             // const saltRounds = 10; is recommended
             const salt = await bcrypt.genSalt(10);
-            const local_manager = {
-                id: parseInt(req.query.id),
-                fullname: req.query.fullname,
-                username: req.query.username,
-                password: await bcrypt.hash(req.query.password, salt)
-            };
-            console.log(await Managers(local_manager).save());
+            local_manager.password = await bcrypt.hash(local_manager.password, salt);
+            await Managers(local_manager).save();
             res.send(`Manager successfully saved.`);
         } catch (exception) {
             console.error(`Error save() ${exception}\n`);
         }
-    }
-
+    };
 });
 
 router.post(`/login`, async (req, res) => {
