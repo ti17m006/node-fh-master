@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
 const schemas = require('../joi_schema/joi_schema');
-const { invalid } = require('@hapi/joi');
 const Managers = require('../database/mogodb_connection').Managers;
 const Workers = require('../database/mogodb_connection').Workers;
 const Geolocation = require('../database/mogodb_connection').Geolocation;
