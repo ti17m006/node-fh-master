@@ -9,46 +9,19 @@ const schemas = require('../joi_schema/joi_schema');
 const Workers = require('../database/mogodb_connection').Workers;
 const Geolocation = require('../database/mogodb_connection').Geolocation;
 
+const privateKey = 'worker_PrivateKey';
+
+const messageToken = {
+	empty: "Empty token",
+	invalid: "Invalid token"
+};
 
 function signWorker(payload) {
 	return jwt.sign({
 		id: payload.id,
 		username: payload.username
-	}, 'worker_PrivateKey');
+	}, privateKey);
 }
-
-router.post('/register', async (req, res) => {
-	try {
-		const existing = await Workers.findOne({ username: req.query.username });
-		if (existing) {
-			console.log('User exists');
-			res.send('User exists');
-		}
-		const check = Joi.validate(req.query, schemas.JoiWorker);
-		if (check.error) {
-			console.error(`worker registration error: ${check.error}`);
-			res.status(400).send(`Error ${check.error}`);
-		} else {
-			const salt = await bcrypt.genSalt(10);
-			const local_worker = {
-				id: parseInt(req.query.id),
-				fullname: req.query.fullname,
-				username: req.query.username,
-				password: await bcrypt.hash(req.query.password, salt)
-			};
-			const local_geolocation = {
-				workerId: parseInt(req.query.id)
-			};
-			const workers = await Workers(local_worker).save();
-			const init_loc = await Geolocation(local_geolocation).save();
-			res.send(`Worker successfully initialised.\n${workers}\n${init_loc}\n`);
-		}
-	}
-	catch (exception) {
-		console.error(`Error save() ${exception}\n`);
-	}
-
-});
 
 router.post('/login', async (req, res) => {
 	try {
@@ -75,9 +48,9 @@ router.post('/login', async (req, res) => {
 router.get('/current', async (req, res) => {
 	try {
 		if (!req.header('jwt-worker')) {
-			res.status(401).send('Empty token');
+			res.status(401).send(messageToken.empty);
 		}
-		res.send(jwt.verify(req.header('jwt-worker'), 'worker_PrivateKey'));
+		res.send(jwt.verify(req.header('jwt-worker'), privateKey));
 	} catch (exception) {
 		res.status(400).send(exception);
 	}
@@ -86,9 +59,9 @@ router.get('/current', async (req, res) => {
 router.put('/location', async (req, res) => {
 	try {
 		if (!req.header('jwt-worker')) {
-			res.status(401).send('Empty token');
+			res.status(401).send(messageToken.empty);
 		}
-		if (jwt.verify(req.header('jwt-worker'), 'worker_PrivateKey')) {
+		if (jwt.verify(req.header('jwt-worker'), privateKey)) {
 			const _id = parseInt(req.query.id);
 			await Geolocation.updateOne(
 				{
@@ -107,7 +80,7 @@ router.put('/location', async (req, res) => {
 				}
 			);
 		} else {
-			res.status(400).send('Invalid token');
+			res.status(400).send(messageToken.invalid);
 		}
 		res.send("Geolocation successfully updated.\n");
 	} catch (exception) {
