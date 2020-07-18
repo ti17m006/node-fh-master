@@ -155,7 +155,7 @@ router.get('/get-worker', async (req, res) => {
         const local_worker_id = parseInt(req.body.id);
         const local_worker = await Workers.find({ id: local_worker_id });
         if (!local_worker) {
-            console.log('local_worker');
+            console.log('local_worker not found');
             res.send('Worker not found');
         }
         const local_geoloc = await Geolocation.find({ workerId: local_worker_id });
