@@ -70,7 +70,6 @@ router.post(`/login`, async (req, res) => {
     } catch (exception) {
         console.error(exception);
     }
-
 });
 
 router.get(`/current`, async (req, res) => {
