@@ -11,7 +11,7 @@ module.exports.JoiWorker = Joi.object({
     username: Joi.string().min(10).max(255).required(),
     password: Joi.string().min(4).max(255).required()
 });
-module.exports.JoiManagerLogin = Joi.object({
+module.exports.JoiLogin = Joi.object({
     username: Joi.string().min(4).max(255).required(),
     password: Joi.string().min(4).max(255).required()
 });

@@ -25,12 +25,17 @@ function signWorker(payload) {
 
 router.post('/login', async (req, res) => {
 	try {
-		const payload = await Workers.findOne({ username: req.query.username });
-		const check = Joi.validate(req.query, schemas.JoiManagerLogin);
+		const local_worker = {
+			username: req.body.username.toString(),
+			password: req.body.password.toString()
+		};
+		const check = Joi.validate(local_worker, schemas.JoiLogin);
 		if (check.error) {
 			console.error(`manager error: ${check.error}`);
 			res.status(400).send(`Error ${check.error}`);
 		}
+		const payload = await Workers.findOne({ username: req.query.username });
+
 		if (!payload) {
 			console.log('User does not exist');
 			res.send('User does not exist');

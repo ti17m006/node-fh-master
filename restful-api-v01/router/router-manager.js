@@ -55,7 +55,7 @@ router.post(`/login`, async (req, res) => {
         let local_manager = {
             username: req.body.username.toString(),
             password: req.body.password.toString()
-        }
+        };
         const check = Joi.validate(local_manager, schemas.JoiManagerLogin);
         if (check.error) {
             console.error(`manager error: ${check.error}`);
