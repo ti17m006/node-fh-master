@@ -265,6 +265,60 @@
 					"response": []
 				},
 				{
+					"name": "managerCurrent01",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFydGluIiwiaWF0IjoxNTk1MDcwMDM3fQ.5Sd1XOlfi6jAv-E8Qb0DtKYaD4oGzUYAHOSYDvTRsPA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/manager/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "managerCurrent02",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "jwt-manager",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1OTUxNDkxMjF9.5_aesr7_F8mvVx_K0TesySycf6PejeQ90qjUCUvN3Is"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/manager/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"manager",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "managerLogin02",
 					"request": {
 						"method": "POST",
@@ -664,31 +718,328 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "managerCurrent",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "jwt-manager",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFydGluIiwiaWF0IjoxNTk1MDcwMDM3fQ.5Sd1XOlfi6jAv-E8Qb0DtKYaD4oGzUYAHOSYDvTRsPA",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8000/api/manager/current",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"manager",
-						"current"
-					]
+			"name": "workerLogin",
+			"item": [
+				{
+					"name": "workerLogin01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"joan@sumner.gu\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/worker/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerLogin02",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"frances@gibbons.ir\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/worker/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerLogin03",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"carol@byers.cx\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/worker/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerLogin04",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"regina@heath.bh\",\n    \"password\": \"qwerty\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/worker/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerCurrent01",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "jwt-worker",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb2FuQHN1bW5lci5ndSIsImlhdCI6MTU5NTE1MDAwNH0.WAEGsSvvcm0yybmk8qIawMKAl0_EubEhrNk0UTbvIVo",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/worker/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerCurrent02",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "jwt-worker",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJmcmFuY2VzQGdpYmJvbnMuaXIiLCJpYXQiOjE1OTUxNTAwMDh9.JaoI2IBnyLCq5_ASY5zpI2mhq_ok8YfRwbxLNl0KbvM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/worker/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerCurrent03",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "jwt-worker",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJjYXJvbEBieWVycy5jeCIsImlhdCI6MTU5NTE1MDAxMn0.BOqGQ0ZqZOnOQ_COQAEhjh1kS3WrD0jUCMNK9jaBu8w",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/worker/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerCurrent04",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "jwt-worker",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJyZWdpbmFAaGVhdGguYmgiLCJpYXQiOjE1OTUxNTAwMTR9.E1TnTNgExZUoxlcABQw11Ho-7y5Pc1knXHa7wO1Ny84",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/worker/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"current"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "workerLocation",
+			"item": [
+				{
+					"name": "workerGeolocation0101",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "jwt-worker",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb2FuQHN1bW5lci5ndSIsImlhdCI6MTU5NTE1MDAwNH0.WAEGsSvvcm0yybmk8qIawMKAl0_EubEhrNk0UTbvIVo",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"coordinates\": [\n        16.400742530822754,\n        48.25751281219447\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/worker/location?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"location"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerGeolocation0102",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "jwt-worker",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb2FuQHN1bW5lci5ndSIsImlhdCI6MTU5NTE1MDAwNH0.WAEGsSvvcm0yybmk8qIawMKAl0_EubEhrNk0UTbvIVo",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"coordinates\": [\n        16.40310287475586,\n        48.25634133273234\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/worker/location?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"worker",
+								"location"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "managerGetWorker",
@@ -793,100 +1144,6 @@
 						{
 							"key": "id",
 							"value": "3"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "workerLogin",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8000/api/worker/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"worker",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "workerCurrent",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "jwt-worker",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb2FuQHN1bW5lci5ndSIsImlhdCI6MTU4OTMwNjI5N30.buuAImzOh_nMqXgPo1-aM12EWPZxzLqG8TXtY5x9yNM",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8000/api/worker/current",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"worker",
-						"current"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "workerGeolocation",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "jwt-worker",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb2FuQHN1bW5lci5ndSIsImlhdCI6MTU4OTMwNjI5N30.buuAImzOh_nMqXgPo1-aM12EWPZxzLqG8TXtY5x9yNM",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8000/api/worker/location?id=1&coordinates=[16.33, 45.234]",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"worker",
-						"location"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						},
-						{
-							"key": "coordinates",
-							"value": "[16.33, 45.234]"
 						}
 					]
 				}
