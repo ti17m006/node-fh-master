@@ -68,6 +68,7 @@ router.put('/location', async (req, res) => {
 		}
 		if (jwt.verify(req.header('jwt-worker'), privateKey)) {
 			const _id = parseInt(req.query.id);
+			const coordinates = req.body.coordinates;
 			await Geolocation.updateOne(
 				{
 					workerId: _id
