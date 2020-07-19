@@ -35,14 +35,14 @@ router.post(`/register`, async (req, res) => {
         res.status(400).send(`Error ${check.error}`);
     }
     if (await Managers.findOne({ username: local_manager.username })) {
-        console.log('User exists');
-        res.send('User exists');
+        throw 'User exists';
     } else {
         try {
             // https://www.npmjs.com/package/bcrypt saltRounds = 10 recommended
             const salt = await bcrypt.genSalt(10);
             local_manager.password = await bcrypt.hash(local_manager.password, salt);
             await Managers(local_manager).save();
+            console.log(`Manager successfully saved.`);
             res.send(`Manager successfully saved.`);
         } catch (exception) {
             console.error(` ${exception}\n`);

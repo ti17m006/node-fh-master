@@ -37,9 +37,9 @@ router.post('/login', async (req, res) => {
 		if (!exists) {
 			throw 'User does not exist';
 		}
-		if (await bcrypt.compare(local_worker.password, payload.password)) {
+		if (await bcrypt.compare(local_worker.password, exists.password)) {
 			console.log('Login successful');
-			res.header('jwt-worker', signWorker(payload)).send(payload);
+			res.header('jwt-worker', signWorker(exists)).send(exists);
 		} else {
 			throw 'Invalid password';
 		}
@@ -78,7 +78,7 @@ router.put('/location', async (req, res) => {
 						locationLength: 1
 					},
 					$push: {
-						location: req.query.coordinates
+						location: coordinates
 					}
 				},
 				{
@@ -88,6 +88,7 @@ router.put('/location', async (req, res) => {
 		} else {
 			throw messageToken.invalid;
 		}
+		console.log("Geolocation successfully updated.\n");
 		res.send("Geolocation successfully updated.\n");
 	} catch (exception) {
 		console.error(exception);
