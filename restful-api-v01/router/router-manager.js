@@ -45,7 +45,8 @@ router.post(`/register`, async (req, res) => {
             await Managers(local_manager).save();
             res.send(`Manager successfully saved.`);
         } catch (exception) {
-            console.error(`Error save() ${exception}\n`);
+            console.error(` ${exception}\n`);
+            res.status(400).send(exception);
         }
     };
 });
@@ -56,7 +57,7 @@ router.post(`/login`, async (req, res) => {
             username: req.body.username.toString(),
             password: req.body.password.toString()
         };
-        const check = Joi.validate(local_manager, schemas.JoiManagerLogin);
+        const check = Joi.validate(local_manager, schemas.JoiLogin);
         if (check.error) {
             console.error(`manager error: ${check.error}`);
             res.status(400).send(`Error ${check.error}`);
@@ -67,13 +68,14 @@ router.post(`/login`, async (req, res) => {
             res.send('User does not exist');
         }
         if (await bcrypt.compare(local_manager.password, payload.password)) {
-            res.header(privateKey, signManager(payload)).send(payload);
             console.log('Login successful');
+            res.header(privateKey, signManager(payload)).send(payload);
         } else {
-            res.send('Invalid password');
+            throw 'Invalid password';
         }
     } catch (exception) {
-        console.error(exception);
+        console.error(` ${exception}\n`);
+        res.status(400).send(exception);
     }
 });
 
@@ -91,10 +93,10 @@ router.get(`/current`, async (req, res) => {
     }
     catch (exception) {
         if (exception === messageToken.empty) {
-            console.log(messageToken.empty);
+            console.error(messageToken.empty);
             res.status(400).send(messageToken.empty);
         } else {
-            console.log(messageToken.invalid);
+            console.error(messageToken.invalid);
             res.status(400).send(messageToken.invalid);
         }
     }
@@ -103,10 +105,10 @@ router.get(`/current`, async (req, res) => {
 router.post(`/register-worker`, async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            res.status(401).send(messageToken.empty);
+            throw messageToken.empty;
         }
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
-            res.status(401).send(messageToken.invalid);
+            throw messageToken.invalid;
         }
         const local_worker = {
             id: parseInt(req.body.id),
@@ -116,13 +118,11 @@ router.post(`/register-worker`, async (req, res) => {
         };
         const check = Joi.validate(local_worker, schemas.JoiWorker);
         if (check.error) {
-            console.error(`Worker registration error: ${check.error}`);
-            res.status(400).send(`Error ${check.error}`);
+            throw check.error;
         }
         const exists = await Workers.findOne({ username: local_worker.username });
         if (exists) {
-            console.log('User exists');
-            res.send('User exists');
+            throw 'User exists';
         }
         try {
             const salt = await bcrypt.genSalt(10);
@@ -137,8 +137,10 @@ router.post(`/register-worker`, async (req, res) => {
             res.send(messageWorker);
         } catch (exception) {
             console.error(`Error save() ${exception}\n`);
+            res.status(400).send(exception);
         }
     } catch (exception) {
+        console.error(`Error save() ${exception}\n`);
         res.status(400).send(exception);
     }
 });
@@ -146,16 +148,15 @@ router.post(`/register-worker`, async (req, res) => {
 router.get('/get-worker', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            res.status(401).send(messageToken.empty);
+            throw messageToken.empty;
         }
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
-            res.status(401).send(messageToken.invalid);
+            throw messageToken.invalid;
         }
         const local_worker_id = parseInt(req.query.id);
         const local_worker = await Workers.find({ id: local_worker_id });
         if (!local_worker) {
-            console.log('local_worker not found');
-            res.send('Worker not found');
+            throw 'Worker not found';
         }
         const local_geoloc = await Geolocation.find({ workerId: local_worker_id });
         const output = `${local_worker} -> ${local_geoloc}`;
@@ -163,6 +164,7 @@ router.get('/get-worker', async (req, res) => {
         res.send(output);
     }
     catch (exception) {
+        console.error(exception);
         res.status(400).send(`${exception}`);
     }
 });
@@ -170,10 +172,10 @@ router.get('/get-worker', async (req, res) => {
 router.put('/update-worker', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            res.status(401).send(messageToken.empty);
+            throw messageToken.empty;
         }
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
-            res.status(401).send(messageToken.invalid);
+            throw messageToken.invalid;
         }
         const local_worker = {
             id: parseInt(req.query.id),
@@ -199,7 +201,7 @@ router.put('/update-worker', async (req, res) => {
         }
     }
     catch (exception) {
-        console.log(exception);
+        console.error(exception);
         res.status(400).send(`${exception}\n`);
     }
 });
@@ -207,16 +209,15 @@ router.put('/update-worker', async (req, res) => {
 router.delete('/delete-worker', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            res.status(401).send(messageToken.empty);
+            throw messageToken.empty;
         }
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
-            res.status(401).send(messageToken.invalid);
+            throw messageToken.invalid;
         }
         const local_worker_id = parseInt(req.query.id);
         const local_worker = await Workers.findOne({ id: local_worker_id });
         if (!local_worker) {
-            console.log(local_worker);
-            res.send('Worker not found');
+            throw 'Worker not found';
         } else {
             await Workers.findOneAndDelete(
                 {
