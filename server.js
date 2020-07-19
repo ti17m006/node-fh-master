@@ -1,4 +1,4 @@
 
 console.log('app.js');
-const myapp = require('./restful-api-v01/app');
-myapp;
+const restfulapi = require('./restful-api-v01/app');
+restfulapi;
