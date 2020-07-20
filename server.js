@@ -4,6 +4,6 @@ if (false) {
     restfulapi;
 } else {
     console.log('graphql');
-    const graphql = require('./graphql-v1/app');
+    const graphql = require('./graphql-v01/app');
     graphql;
 }
