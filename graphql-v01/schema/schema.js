@@ -14,6 +14,9 @@ const {
 const manager_query = require('../query/manager_query');
 const worker_query = require('../query/worker_query');
 
+const manager_mutation = require('../mutations/manager_mutation');
+const worker_mutation = require('../mutations/worker_mutation');
+
 const RootQuery = new GraphQLObjectType({
     name: "Query",
     fields: {
