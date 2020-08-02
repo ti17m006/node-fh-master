@@ -1,9 +1,9 @@
 /** MongoDB Connection */
 
-const mongo_config = require('../config/mongo_config.json').developer;
+const mongo_config = require('./mongo_config.json').developer;
 const dblink = `mongodb://${mongo_config.server}:${mongo_config.port}/${mongo_config.database}`;
 
-const Model = require('../model/mongo_models');
+const Model = require('./mongo_models');
 const mongoose = require('mongoose');
 
 class Database {
@@ -21,7 +21,7 @@ class Database {
 	disconnect() {
 		mongoose.disconnect()
 			.then(() => { console.log('The connection is closed\n'); })
-			.catch(() => { console.log('The connection failed to close\n'); });
+			.catch(() => { console.error('The connection failed to close\n'); });
 	}
 }
 module.exports = new Database();

@@ -16,7 +16,7 @@ const express = require('express')
 const router = express.Router();
 const manager = require('./router/router-manager');
 const worker = require('./router/router-worker');
-const db = require('../restful-api-v01/database/mogodb_connection');
+const db = require('../database/mogodb_connection');
 db;
 const compression = require('compression');
 const app = require('express')()

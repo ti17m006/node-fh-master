@@ -1,4 +1,4 @@
-if (false) {
+if (!true) {
     console.log('restful api');
     const restfulapi = require('./restful-api-v01/app');
     restfulapi;

@@ -3,10 +3,16 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
-const schemas = require('../joi_schema/joi_schema');
-const Managers = require('../database/mogodb_connection').Managers;
-const Workers = require('../database/mogodb_connection').Workers;
-const Geolocation = require('../database/mogodb_connection').Geolocation;
+const {
+    JoiLogin,
+    JoiManager,
+    JoiWorker
+} = require('../../joi_schema/joi_schema');
+const {
+    Managers,
+    Workers,
+    Geolocation
+} = require('../../database/mogodb_connection');
 
 const privateKey = 'manager_PrivateKey'
 
@@ -29,7 +35,7 @@ router.post(`/register`, async (req, res) => {
         username: req.body.username.toString(),
         password: req.body.password.toString()
     };
-    const check = Joi.validate(local_manager, schemas.JoiManager);
+    const check = Joi.validate(local_manager, JoiManager);
     if (check.error) {
         console.error(`manager error: ${check.error}`);
         res.status(400).send(`Error ${check.error}`);
@@ -57,7 +63,7 @@ router.post(`/login`, async (req, res) => {
             username: req.body.username.toString(),
             password: req.body.password.toString()
         };
-        const check = Joi.validate(local_manager, schemas.JoiLogin);
+        const check = Joi.validate(local_manager, JoiLogin);
         if (check.error) {
             console.error(`manager error: ${check.error}`);
             res.status(400).send(`Error ${check.error}`);
@@ -116,7 +122,7 @@ router.post(`/register-worker`, async (req, res) => {
             username: req.body.username.toString(),
             password: req.body.password.toString()
         };
-        const check = Joi.validate(local_worker, schemas.JoiWorker);
+        const check = Joi.validate(local_worker, JoiWorker);
         if (check.error) {
             throw check.error;
         }
@@ -145,7 +151,7 @@ router.post(`/register-worker`, async (req, res) => {
     }
 });
 
-router.get('/get-worker', async (req, res) => {
+router.get('/get-worker/:id', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
             throw messageToken.empty;
@@ -153,9 +159,9 @@ router.get('/get-worker', async (req, res) => {
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
             throw messageToken.invalid;
         }
-        const local_worker_id = parseInt(req.query.id);
+        const local_worker_id = parseInt(req.params.id);
         const local_worker = await Workers.find({ id: local_worker_id });
-        if (!local_worker) {
+        if (local_worker) {
             throw 'Worker not found';
         }
         const local_geoloc = await Geolocation.find({ workerId: local_worker_id });
@@ -169,7 +175,7 @@ router.get('/get-worker', async (req, res) => {
     }
 });
 
-router.put('/update-worker', async (req, res) => {
+router.put('/update-worker/:id', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
             throw messageToken.empty;
@@ -178,7 +184,7 @@ router.put('/update-worker', async (req, res) => {
             throw messageToken.invalid;
         }
         const local_worker = {
-            id: parseInt(req.query.id),
+            id: parseInt(req.params.id),
             old_password: req.body.old_password.toString(),
             new_password: req.body.new_password.toString()
         }
@@ -197,7 +203,7 @@ router.put('/update-worker', async (req, res) => {
             console.log(output);
             res.send(output);
         } else {
-            throw 'Password exception';
+            throw 'Password exception\n';
         }
     }
     catch (exception) {
@@ -206,7 +212,7 @@ router.put('/update-worker', async (req, res) => {
     }
 });
 
-router.delete('/delete-worker', async (req, res) => {
+router.delete('/delete-worker/:id', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
             throw messageToken.empty;
@@ -214,20 +220,21 @@ router.delete('/delete-worker', async (req, res) => {
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
             throw messageToken.invalid;
         }
-        const local_worker_id = parseInt(req.query.id);
+        const local_worker_id = parseInt(req.params.id);
         const local_worker = await Workers.findOne({ id: local_worker_id });
         if (!local_worker) {
             throw 'Worker not found';
         } else {
             await Workers.findOneAndDelete(
                 {
-                    id: req.query.id
+                    id: req.params.id
                 });
             console.log('Worker deleted');
             res.send('Worker deleted');
         }
     }
     catch (exception) {
+        console.error(exception);
         res.status(400).send(`${exception}`);
     }
 });

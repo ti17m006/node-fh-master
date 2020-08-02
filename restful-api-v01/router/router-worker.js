@@ -5,9 +5,8 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Joi = require('@hapi/joi');
-const schemas = require('../joi_schema/joi_schema');
-const Workers = require('../database/mogodb_connection').Workers;
-const Geolocation = require('../database/mogodb_connection').Geolocation;
+const { JoiLogin } = require('../../joi_schema/joi_schema');
+const { Managers, Workers, Geolocation } = require('../../database/mogodb_connection');
 
 const privateKey = 'worker_PrivateKey';
 
@@ -29,7 +28,7 @@ router.post('/login', async (req, res) => {
 			username: req.body.username.toString(),
 			password: req.body.password.toString()
 		};
-		const check = Joi.validate(local_worker, schemas.JoiLogin);
+		const check = Joi.validate(local_worker, JoiLogin);
 		if (check.error) {
 			throw `Login error: ${check.error}`;
 		}
@@ -67,7 +66,7 @@ router.put('/location', async (req, res) => {
 			throw messageToken.empty;
 		}
 		if (jwt.verify(req.header('jwt-worker'), privateKey)) {
-			const _id = parseInt(req.query.id);
+			const _id = parseInt(req.params.id);
 			const coordinates = req.body.coordinates;
 			await Geolocation.updateOne(
 				{
