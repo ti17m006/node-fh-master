@@ -4,7 +4,7 @@ const { validateLogin } = require('../../joi_schema/joi_schema');
 const { compare } = require('../miscellaneous/bcryptHash');
 const { errorMessageToken, signManager } = require('../miscellaneous/jwtModels');
 
-const privateKey = 'manager_PrivateKey';
+const privateKey = `superunknown`;
 
 module.exports.get = (id) => {
     return Managers.findOne({ id: id })
