@@ -40,16 +40,22 @@ const RootQuery = new GraphQLObjectType({
 const RootMutation = new GraphQLObjectType({
     name: "Mutation",
     fields: {
-        managerRegister: {},
-        managerLogin: {},
-        workerLogin: {},
-        workerRegister: {},
-        workerUpdate: {},
-        workerDelete: {}
+        managerRegister: {
+            type: ManagerType,
+            args: ManagerObject,
+            resolve(parent, args) {
+                return manager_mutation.register(args);
+            }
+        }
+        // managerLogin: {},
+        // workerLogin: {},
+        // workerRegister: {},
+        // workerUpdate: {},
+        // workerDelete: {}
     }
 });
 
 module.exports = new GraphQLSchema({
-    query: RootQuery//,
-    //mutation: RootMutation
+    query: RootQuery,
+    mutation: RootMutation
 });

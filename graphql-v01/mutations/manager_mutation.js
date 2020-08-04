@@ -1,26 +1,53 @@
-const { genSalt, hash } = require('bcrypt');
+
 
 const { Managers, Workers } = require('../../database/mogodb_connection');
-const { JoiLogin, JoiManager, JoiWorker } = require('../../joi_schema/joi_schema');
-const { errorMessageToken, signManager } = require('../schema/jwt_modules');
+const { validateManager } = require('../../joi_schema/joi_schema');
+const { hashPasword } = require('../miscellaneous/bcryptHash');
+const { errorMessageToken, signManager } = require('../miscellaneous/jwtModels');
 
 const privateKey = 'manager_PrivateKey'
 
 // register
-module.exports.register = (manager) => {
-    // TODO: validation
-    Managers.create(manager)
-        .then((success) => {
-            if (success) {
-                console.log('Successfully saved');
-            } else {
-                throw 'Not saved';
+module.exports.register = async (manager) => {
+    let local_manager = {
+        id: manager.id,
+        fullname: manager.fullname,
+        username: manager.username,
+        password: manager.password
+    };
+    try {
+        const check = validateManager(local_manager);
+        if (check.error) {
+            throw `Joi validation failed ${check.error}`;
+        } else {
+            const result = await Managers.findOne({ username: local_manager.username });
+            console.log();
+            if (result) {
+                throw 'Manager exists';
             }
-        })
-        .catch((e) => {
-            console.error(e);
-        });
+            local_manager.password = await hashPasword(local_manager.password)
+            Managers.create(local_manager)
+                .then((success) => {
+                    if (success) {
+                        console.log('Successfully saved');
+                    } else {
+                        throw 'Not saved';
+                    }
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        };
+    } catch (e) {
+        console.error(e);
+        return e;
+    }
 }
+
+
+//                 .catch ((e) => {
+//     console.error(e);
+// })
 
 // login
 module.exports.login = (manager) => {
