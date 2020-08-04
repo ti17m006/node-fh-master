@@ -20,14 +20,14 @@ const worker_mutation = require('../mutations/worker_mutation');
 const RootQuery = new GraphQLObjectType({
     name: "Query",
     fields: {
-        get_manager: {
+        getManager: {
             type: ManagerType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
                 return manager_query.get(parseInt(args.id));
             }
         },
-        get_worker: {
+        getWorker: {
             type: WorkerType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {

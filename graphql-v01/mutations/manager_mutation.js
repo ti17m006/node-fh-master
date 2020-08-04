@@ -21,15 +21,15 @@ module.exports.register = async (manager) => {
             throw `Joi validation failed ${check.error}`;
         } else {
             const result = await Managers.findOne({ username: local_manager.username });
-            console.log();
             if (result) {
                 throw 'Manager exists';
             }
-            local_manager.password = await hashPasword(local_manager.password)
+            local_manager.password = await hashPasword(local_manager.password);
             Managers.create(local_manager)
                 .then((success) => {
                     if (success) {
-                        console.log('Successfully saved');
+                        console.log('Successfully saved\n', success);
+                        return success.id;
                     } else {
                         throw 'Not saved';
                     }
