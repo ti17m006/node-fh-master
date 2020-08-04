@@ -1,7 +1,5 @@
 const jsonwebtoken = require('jsonwebtoken');
 
-
-
 module.exports.errorMessageToken = {
     empty: "Empty token",
     invalid: "Invalid token"
