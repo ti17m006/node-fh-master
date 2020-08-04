@@ -6,6 +6,13 @@ const {
     GraphQLString
 } = require('graphql');
 
+const LoginObject = {
+    username: { type: GraphQLString },
+    password: { type: GraphQLString },
+    token: { type: GraphQLString },
+    status: { type: GraphQLString }
+}
+
 const ManagerObject = {
     id: { type: GraphQLID },
     fullname: { type: GraphQLString },
@@ -24,6 +31,11 @@ const LocationObject = {
     longitude: { type: GraphQLString },
     latitude: { type: GraphQLString }
 };
+
+const Login = {
+    name: 'Login',
+    fields: LoginObject
+}
 
 const Manager = {
     name: 'Manager',
@@ -49,10 +61,12 @@ const Geolocation = {
     }
 };
 
+module.exports.LoginObject = LoginObject;
 module.exports.ManagerObject = ManagerObject;
 module.exports.WorkerObject = WorkerObject;
 module.exports.LocationObject = LocationObject;
 
+module.exports.LoginType = new GraphQLObjectType(Login);
 module.exports.ManagerType = new GraphQLObjectType(Manager);
 module.exports.WorkerType = new GraphQLObjectType(Worker);
 module.exports.GeolocationType = new GraphQLObjectType(Geolocation);

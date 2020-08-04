@@ -1,21 +1,16 @@
-
-
 const { Managers, Workers } = require('../../database/mogodb_connection');
-const { validateManager } = require('../../joi_schema/joi_schema');
 const { hashPasword } = require('../miscellaneous/bcryptHash');
-const { errorMessageToken, signManager } = require('../miscellaneous/jwtModels');
-
-const privateKey = 'manager_PrivateKey'
+const { validateManager } = require('../../joi_schema/joi_schema');
 
 // register
 module.exports.register = async (manager) => {
-    let local_manager = {
-        id: manager.id,
-        fullname: manager.fullname,
-        username: manager.username,
-        password: manager.password
-    };
     try {
+        let local_manager = {
+            id: manager.id,
+            fullname: manager.fullname,
+            username: manager.username,
+            password: manager.password
+        };
         const check = validateManager(local_manager);
         if (check.error) {
             throw `Joi validation failed ${check.error}`;
@@ -25,48 +20,25 @@ module.exports.register = async (manager) => {
                 throw 'Manager exists';
             }
             local_manager.password = await hashPasword(local_manager.password);
-            Managers.create(local_manager)
+            return Managers.create(local_manager)
                 .then((success) => {
                     if (success) {
                         console.log('Successfully saved\n', success);
-                        return success.id;
+                        return true;
                     } else {
                         throw 'Not saved';
                     }
                 })
                 .catch((e) => {
                     console.error(e);
+                    return false;
                 });
         };
-    } catch (e) {
-        console.error(e);
-        return e;
+    } catch (exception) {
+        console.error(exception);
+        return false;
     }
 }
 
 
-//                 .catch ((e) => {
-//     console.error(e);
-// })
 
-// login
-module.exports.login = (manager) => {
-
-}
-
-// register worker
-module.exports.registerWorker = (worker) => {
-    Workers.create()
-        .then()
-        .catch()
-}
-
-// /update-worker/:id
-module.exports.updateWorker = (id) => {
-
-}
-
-// /delete-worker/:id
-module.exports.deleteWorker = (id) => {
-
-}

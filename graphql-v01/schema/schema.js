@@ -1,14 +1,18 @@
 const {
     GraphQLSchema,
     GraphQLObjectType,
-    GraphQLID
+    GraphQLID,
+    GraphQLScalarType,
+    GraphQLString
 } = require('graphql');
 
 const {
     ManagerType,
     WorkerType,
+    LoginType,
     ManagerObject,
-    WorkerObject
+    WorkerObject,
+    LoginObject
 } = require('../modelsql/modelsql');
 
 const manager_query = require('../query/manager_query');
@@ -23,16 +27,17 @@ const RootQuery = new GraphQLObjectType({
         getManager: {
             type: ManagerType,
             args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return manager_query.get(parseInt(args.id));
-            }
+            resolve: (parent, args) => (manager_query.get(parseInt(args.id)))
         },
-        getWorker: {
-            type: WorkerType,
-            args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return worker_query.get(parseInt(args.id));
-            }
+        managerLogin: {
+            type: LoginType,
+            args: {
+                username: { type: GraphQLString },
+                password: { type: GraphQLString }
+            },
+            resolve: (parent, args) => ({
+                token: manager_query.login(args)
+            })
         }
     }
 });
@@ -43,15 +48,8 @@ const RootMutation = new GraphQLObjectType({
         managerRegister: {
             type: ManagerType,
             args: ManagerObject,
-            resolve(parent, args) {
-                return manager_mutation.register(args);
-            }
+            resolve: (parent, args) => (manager_mutation.register(args))
         }
-        // managerLogin: {},
-        // workerLogin: {},
-        // workerRegister: {},
-        // workerUpdate: {},
-        // workerDelete: {}
     }
 });
 
