@@ -1,26 +1,14 @@
 /** router worker example */
-const express = require('express');
-const router = express.Router();
-
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const Joi = require('@hapi/joi');
-const { JoiLogin } = require('../../joi_schema/joi_schema');
-const { Managers, Workers, Geolocation } = require('../../database/mogodb_connection');
-
-const privateKey = 'worker_PrivateKey';
-
-const messageToken = {
-	empty: "Empty token",
-	invalid: "Invalid token"
-};
-
-function signWorker(payload) {
-	return jwt.sign({
-		id: payload.id,
-		username: payload.username
-	}, privateKey);
-}
+const router = require('express').Router();
+const { compare } = require('../miscellaneous/bcryptHash');
+const { signatureWorker, errorMessageToken, verifyWorker } = require('../miscellaneous/jwtModels');
+const {
+	validateLogin,
+} = require('../../joi_schema/joi_schema');
+const {
+	Workers,
+	Geolocation
+} = require('../../database/mogodb_connection');
 
 router.post('/login', async (req, res) => {
 	try {
@@ -28,7 +16,7 @@ router.post('/login', async (req, res) => {
 			username: req.body.username.toString(),
 			password: req.body.password.toString()
 		};
-		const check = Joi.validate(local_worker, JoiLogin);
+		const check = validateLogin(local_worker);
 		if (check.error) {
 			throw `Login error: ${check.error}`;
 		}
@@ -36,9 +24,10 @@ router.post('/login', async (req, res) => {
 		if (!exists) {
 			throw 'User does not exist';
 		}
-		if (await bcrypt.compare(local_worker.password, exists.password)) {
+		if (await compare(local_worker.password, exists.password)) {
 			console.log('Login successful');
-			res.header('jwt-worker', signWorker(exists)).send(exists);
+			res.setHeader('jwt_worker', signatureWorker(exists));
+			res.send('Login successful');
 		} else {
 			throw 'Invalid password';
 		}
@@ -51,21 +40,22 @@ router.post('/login', async (req, res) => {
 router.get('/current', async (req, res) => {
 	try {
 		if (!req.header('jwt-worker')) {
-			throw messageToken.empty;
+			throw errorMessageToken.empty;
 		}
-		res.send(jwt.verify(req.header('jwt-worker'), privateKey));
-	} catch (exception) {
+		res.send(verifyWorker(req.header('jwt_worker')));
 		console.error(` ${exception}\n`);
 		res.status(400).send(exception);
+	} catch (exception) {
+		console.log(exception);
 	}
 });
 
 router.put('/location', async (req, res) => {
 	try {
-		if (!req.header('jwt-worker')) {
-			throw messageToken.empty;
+		if (!req.header('jwt_worker')) {
+			throw errorMessageToken.empty;
 		}
-		if (jwt.verify(req.header('jwt-worker'), privateKey)) {
+		if (verifyWorker(req.header('jwt_worker'))) {
 			const _id = parseInt(req.params.id);
 			const coordinates = req.body.coordinates;
 			await Geolocation.updateOne(
@@ -85,7 +75,7 @@ router.put('/location', async (req, res) => {
 				}
 			);
 		} else {
-			throw messageToken.invalid;
+			throw errorMessageToken.invalid;
 		}
 		console.log("Geolocation successfully updated.\n");
 		res.send("Geolocation successfully updated.\n");

@@ -26,7 +26,8 @@
   },
   "keywords": [
     "nodejs",
-    "REST"
+    "REST",
+    "GraphQL"
   ],
   "author": "Damjan Ivanovic",
   "license": "ISC",

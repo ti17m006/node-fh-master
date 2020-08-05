@@ -5,11 +5,23 @@ module.exports.errorMessageToken = {
     invalid: "Invalid token"
 };
 
-module.exports.signature = (payload, privateKey) => {
+const privateKeyManager = 'Manager_private_key';
+const privateKeyWorker = 'Worker_private_key';
+
+module.exports.signatureManager = (payload) => {
     return jsonwebtoken.sign({
-        id: payload.id,
-        username: payload.username
-    }, privateKey);
+        username: payload.username,
+        password: payload.password
+    }, privateKeyManager);
 };
 
-module.exports.verify = (token, secret) => (jsonwebtoken.verify(token, secret));
+module.exports.signatureWorker = (payload) => {
+    return jsonwebtoken.sign({
+        username: payload.username,
+        password: payload.password
+    }, privateKeyWorker);
+};
+
+module.exports.verifyManager = (token) => (jsonwebtoken.verify(token, privateKeyManager));
+
+module.exports.verifyWorker = (token) => (jsonwebtoken.verify(token, privateKeyWorker));
