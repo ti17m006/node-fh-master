@@ -12,8 +12,7 @@ const credentials = {
     cert: certificate
 }
 
-const express = require('express')
-const router = express.Router();
+const { json, Router } = require('express');
 const manager = require('./router/router-manager');
 const worker = require('./router/router-worker');
 const db = require('../database/mogodb_connection');
@@ -21,8 +20,8 @@ db;
 const compression = require('compression');
 const app = require('express')()
     .use(compression())
-    .use(require('express').json())
-    .use('/api', router)
+    .use(json())
+    .use('/api', Router())
     .use('/api/manager', manager)
     .use('/api/worker', worker)
     .post('/', (req, res) => {
