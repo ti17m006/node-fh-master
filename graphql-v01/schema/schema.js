@@ -36,6 +36,7 @@ const RootQuery = new GraphQLObjectType({
                 password: { type: GraphQLString }
             },
             resolve: (parent, args) => ({
+                // https://github.com/graphile/postgraphile/issues/83
                 token: manager_query.login(args)
             })
         }

@@ -38,7 +38,7 @@ module.exports.login = async (manager) => {
                 if (await compare(local_manager.password, payload.password)) {
                     return signManager(payload, privateKey);
                 } else {
-                    throw errorMessageToken.invalid;
+                    throw 'Invalid password';
                 }
             }
 

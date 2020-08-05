@@ -1,59 +1,44 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const Joi = require('@hapi/joi');
+const router = require('express').Router();
+const { hashPasword, compare } = require('../miscellaneous/bcryptHash');
+const { signature, errorMessageToken } = require('../miscellaneous/jwtModels');
 const {
-    JoiLogin,
-    JoiManager,
-    JoiWorker
+    validateManager,
+    validateLogin,
+    validateWorker
 } = require('../../joi_schema/joi_schema');
 const {
     Managers,
     Workers,
     Geolocation
 } = require('../../database/mogodb_connection');
+const { verify } = require('jsonwebtoken');
 
 const privateKey = 'manager_PrivateKey'
 
-const messageToken = {
-    empty: "Empty token",
-    invalid: "Invalid token"
-};
-
-function signManager(payload) {
-    return jwt.sign({
-        id: payload.id,
-        username: payload.username
-    }, privateKey);
-}
-
 router.post(`/register`, async (req, res) => {
-    let local_manager = {
-        id: parseInt(req.body.id),
-        fullname: req.body.fullname.toString(),
-        username: req.body.username.toString(),
-        password: req.body.password.toString()
-    };
-    const check = Joi.validate(local_manager, JoiManager);
-    if (check.error) {
-        console.error(`manager error: ${check.error}`);
-        res.status(400).send(`Error ${check.error}`);
-    }
-    if (await Managers.findOne({ username: local_manager.username })) {
-        throw 'User exists';
-    } else {
-        try {
-            // https://www.npmjs.com/package/bcrypt saltRounds = 10 recommended
-            const salt = await bcrypt.genSalt(10);
-            local_manager.password = await bcrypt.hash(local_manager.password, salt);
+    try {
+        let local_manager = {
+            id: parseInt(req.body.id),
+            fullname: req.body.fullname.toString(),
+            username: req.body.username.toString(),
+            password: req.body.password.toString()
+        };
+        const check = validateManager(local_manager);
+        if (check.error) {
+            throw `manager error: ${check.error}`;
+        }
+        if (await Managers.findOne({ username: local_manager.username })) {
+            throw 'User exists';
+        } else {
+
+            local_manager.password = await hashPasword(local_manager.password);
             await Managers(local_manager).save();
             console.log(`Manager successfully saved.`);
             res.send(`Manager successfully saved.`);
-        } catch (exception) {
-            console.error(` ${exception}\n`);
-            res.status(400).send(exception);
         }
+    } catch (exception) {
+        console.error(` ${exception}\n`);
+        res.send(exception);
     };
 });
 
@@ -63,25 +48,24 @@ router.post(`/login`, async (req, res) => {
             username: req.body.username.toString(),
             password: req.body.password.toString()
         };
-        const check = Joi.validate(local_manager, JoiLogin);
+        const check = validateLogin(local_manager);
         if (check.error) {
-            console.error(`manager error: ${check.error}`);
-            res.status(400).send(`Error ${check.error}`);
+            throw `manager error: ${check.error}`;
         }
         const payload = await Managers.findOne({ username: local_manager.username });
         if (!payload) {
             console.log('User does not exist');
             res.send('User does not exist');
         }
-        if (await bcrypt.compare(local_manager.password, payload.password)) {
+        if (await compare(local_manager.password, payload.password)) {
             console.log('Login successful');
-            res.header(privateKey, signManager(payload)).send(payload);
+            res.header(privateKey, signature(payload, privateKey)).send(payload);
         } else {
             throw 'Invalid password';
         }
     } catch (exception) {
         console.error(` ${exception}\n`);
-        res.status(400).send(exception);
+        res.send(exception);
     }
 });
 
@@ -90,20 +74,19 @@ router.get(`/current`, async (req, res) => {
         if (!req.header('jwt-manager')) {
             throw messageToken.empty;
         } else {
-            const verified = jwt.verify(req.header('jwt-manager'), privateKey);
-            if (verified) {
+            if (verify(req.header('jwt-manager'), privateKey)) {
                 console.log('Verification succssessful');
                 res.send(verified);
             }
         }
     }
     catch (exception) {
-        if (exception === messageToken.empty) {
-            console.error(messageToken.empty);
-            res.status(400).send(messageToken.empty);
+        if (exception === errorMessageToken.empty) {
+            console.error(errorMessageToken.empty);
+            res.send(errorMessageToken.empty);
         } else {
-            console.error(messageToken.invalid);
-            res.status(400).send(messageToken.invalid);
+            console.error(errorMessageToken.invalid);
+            res.send(errorMessageToken.invalid);
         }
     }
 });
@@ -111,10 +94,10 @@ router.get(`/current`, async (req, res) => {
 router.post(`/register-worker`, async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            throw messageToken.empty;
+            throw errorMessageToken.empty;
         }
-        if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
-            throw messageToken.invalid;
+        if (!verify(req.header('jwt-manager'), privateKey)) {
+            throw errorMessageToken.invalid;
         }
         const local_worker = {
             id: parseInt(req.body.id),
@@ -122,7 +105,7 @@ router.post(`/register-worker`, async (req, res) => {
             username: req.body.username.toString(),
             password: req.body.password.toString()
         };
-        const check = Joi.validate(local_worker, JoiWorker);
+        const check = validateWorker(local_worker, JoiWorker);
         if (check.error) {
             throw check.error;
         }
@@ -131,33 +114,32 @@ router.post(`/register-worker`, async (req, res) => {
             throw 'User exists';
         }
         try {
-            const salt = await bcrypt.genSalt(10);
-            local_worker.password = await bcrypt.hash(local_worker.password, salt);
+            local_worker.password = await hashPasword(local_worker.password);
             const local_geolocation = {
                 workerId: parseInt(local_worker.id)
             };
             const workers = await Workers(local_worker).save();
             const init_loc = await Geolocation(local_geolocation).save();
-            const messageWorker = `Worker successfully initialised.\n${workers}\n${init_loc}\n`;
+            const messageWorker = `Worker successfully initialized.\n${workers}\n${init_loc}\n`;
             console.log(messageWorker);
             res.send(messageWorker);
         } catch (exception) {
             console.error(`Error save() ${exception}\n`);
-            res.status(400).send(exception);
+            res.send(exception);
         }
     } catch (exception) {
         console.error(`Error save() ${exception}\n`);
-        res.status(400).send(exception);
+        res.send(exception);
     }
 });
 
 router.get('/get-worker/:id', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            throw messageToken.empty;
+            throw errorMessageToken.empty;
         }
-        if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
-            throw messageToken.invalid;
+        if (verify(req.header('jwt-manager'), privateKey)) {
+            throw errorMessageToken.invalid;
         }
         const local_worker_id = parseInt(req.params.id);
         const local_worker = await Workers.find({ id: local_worker_id });
@@ -178,10 +160,10 @@ router.get('/get-worker/:id', async (req, res) => {
 router.put('/update-worker/:id', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            throw messageToken.empty;
+            throw errorMessageToken.empty;
         }
         if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
-            throw messageToken.invalid;
+            throw errorMessageToken.invalid;
         }
         const local_worker = {
             id: parseInt(req.params.id),
@@ -190,12 +172,10 @@ router.put('/update-worker/:id', async (req, res) => {
         }
         const exists = await Workers.findOne({ id: local_worker.id });
         if (!exists) {
-            console.log('User does not exist');
-            res.send('User does not exist');
+            throw 'User does not exist';
         }
-        if (await bcrypt.compare(local_worker.old_password, exists.password)) {
-            const salt = await bcrypt.genSalt(10);
-            const new_password = await bcrypt.hash(local_worker.new_password, salt);
+        if (await compare(local_worker.old_password, exists.password)) {
+            const new_password = hashPasword(local_worker.new_password);
             const output = await Workers.findOneAndUpdate({
                 id: local_worker.id,
                 "password": new_password
@@ -215,10 +195,10 @@ router.put('/update-worker/:id', async (req, res) => {
 router.delete('/delete-worker/:id', async (req, res) => {
     try {
         if (!req.header('jwt-manager')) {
-            throw messageToken.empty;
+            throw errorMessageToken.empty;
         }
-        if (!jwt.verify(req.header('jwt-manager'), privateKey)) {
-            throw messageToken.invalid;
+        if (!verify(req.header('jwt-manager'), privateKey)) {
+            throw errorMessageToken.invalid;
         }
         const local_worker_id = parseInt(req.params.id);
         const local_worker = await Workers.findOne({ id: local_worker_id });
