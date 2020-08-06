@@ -21,7 +21,8 @@ module.exports.get = (id) => {
 };
 
 // login
-module.exports.login = async (manager) => {
+module.exports.login = async (manager, headers) => {
+    console.log(headers);
     try {
         let local_manager = {
             username: manager.username.toString(),
