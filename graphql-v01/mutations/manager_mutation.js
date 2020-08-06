@@ -1,5 +1,5 @@
 const { Managers, Workers } = require('../../database/mogodb_connection');
-const { hashPasword } = require('../miscellaneous/bcryptHash');
+const { hashPasword } = require('../../miscellaneous/bcryptHash');
 const { validateManager } = require('../../joi_schema/joi_schema');
 
 // register

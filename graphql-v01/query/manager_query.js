@@ -1,8 +1,8 @@
 
 const { Managers } = require('../../database/mogodb_connection');
 const { validateLogin } = require('../../joi_schema/joi_schema');
-const { compare } = require('../miscellaneous/bcryptHash');
-const { errorMessageToken, signManager } = require('../miscellaneous/jwtModels');
+const { compare } = require('../../miscellaneous/bcryptHash');
+const { errorMessageToken, signatureManager } = require('../../miscellaneous/jwtModels');
 
 const privateKey = `superunknown`;
 
@@ -36,9 +36,9 @@ module.exports.login = async (manager) => {
                 throw 'Manager does not exist';
             } else {
                 if (await compare(local_manager.password, payload.password)) {
-                    return signManager(payload, privateKey);
+                    return signatureManager(payload, privateKey);
                 } else {
-                    throw 'Invalid password';
+                    throw errorMessageToken.invalid;
                 }
             }
 
