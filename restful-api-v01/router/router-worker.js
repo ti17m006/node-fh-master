@@ -1,7 +1,7 @@
 /** router worker example */
 const router = require('express').Router();
-const { compare } = require('../miscellaneous/bcryptHash');
-const { signatureWorker, errorMessageToken, verifyWorker } = require('../miscellaneous/jwtModels');
+const { compare } = require('../../miscellaneous/bcryptHash');
+const { signatureWorker, errorMessageToken, verifyWorker } = require('../../miscellaneous/jwtModels');
 const {
 	validateLogin,
 } = require('../../joi_schema/joi_schema');

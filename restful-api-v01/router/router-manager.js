@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const { hashPasword, compare } = require('../miscellaneous/bcryptHash');
-const { signatureManager, errorMessageToken, verifyManager } = require('../miscellaneous/jwtModels');
+const { hashPasword, compare } = require('../../miscellaneous/bcryptHash');
+const { signatureManager, errorMessageToken, verifyManager } = require('../../miscellaneous/jwtModels');
 const {
     validateManager,
     validateLogin,
