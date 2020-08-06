@@ -1,6 +1,5 @@
 const { genSalt, hash, compare } = require('bcrypt');
 
-
 // https://www.npmjs.com/package/bcrypt saltRounds = 10 recommended   
 
 module.exports.hashPasword = async (password) => {
