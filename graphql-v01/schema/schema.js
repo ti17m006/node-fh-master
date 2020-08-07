@@ -24,11 +24,6 @@ const worker_mutation = require('../mutations/worker_mutation');
 const RootQuery = new GraphQLObjectType({
     name: "Query",
     fields: {
-        getManager: {
-            type: ManagerType,
-            args: { id: { type: GraphQLID } },
-            resolve: (parent, args) => (manager_query.get(parseInt(args.id)))
-        },
         managerLogin: {
             type: LoginType,
             args: {
@@ -38,6 +33,13 @@ const RootQuery = new GraphQLObjectType({
             resolve: (parent, args) => ({
                 token: manager_query.login(args)
             })
+        },
+        current: {
+            type: ManagerType,
+            args: {
+                username: { type: GraphQLString }
+            },
+            resolve: (parent, args, context) => (manager_query.current(args, context.headers))
         }
     }
 });
