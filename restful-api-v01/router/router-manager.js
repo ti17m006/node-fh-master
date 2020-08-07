@@ -73,9 +73,9 @@ router.get(`/current`, async (req, res) => {
         if (!req.header('jwt_manager')) {
             throw messageToken.empty;
         } else {
-            if (verifyManager(req.header('jwt_manager'), privateKey)) {
+            if (verifyManager(req.header('jwt_manager'))) {
                 console.log('Verification succssessful');
-                res.send(verified);
+                res.send('Verification succssessful');
             }
         }
     }
