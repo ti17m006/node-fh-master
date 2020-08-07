@@ -1,3 +1,8 @@
+/**
+ * Direct assignment of access token.
+ * This code doesn't provide refresh token.
+ */
+
 const jsonwebtoken = require('jsonwebtoken');
 
 module.exports.errorMessageToken = {
