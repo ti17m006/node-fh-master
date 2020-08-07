@@ -1,6 +1,8 @@
 /**
  * Direct assignment of access token.
- * This code doesn't provide refresh token.
+ * This code doesn't provide refresh token and 
+ * it's for scholar purposes only.
+ * 
  */
 
 const jsonwebtoken = require('jsonwebtoken');
