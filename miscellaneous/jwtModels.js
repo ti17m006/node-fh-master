@@ -1,6 +1,6 @@
 /**
  * Direct assignment of access token.
- * This code doesn't provide refresh token and 
+ * This code doesn't provide bearer token and 
  * it's for scholar purposes only.
  * 
  */
