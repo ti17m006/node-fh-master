@@ -42,3 +42,5 @@ module.exports.register = async (manager) => {
 
 
 
+//register-worker
+// delete-worker

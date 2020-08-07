@@ -1,6 +1,8 @@
 
 const { Workers } = require('../../database/mogodb_connection');
 
+// login
+
 module.exports.get = (id) => {
     return Workers.findOne({ id: id })
         .then((result) => {
@@ -14,3 +16,4 @@ module.exports.get = (id) => {
             console.error(e);
         });
 }
+

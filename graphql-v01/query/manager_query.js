@@ -6,25 +6,6 @@ const { errorMessageToken, signatureManager, verifyManager } = require('../../mi
 
 const privateKey = `superunknown`;
 
-module.exports.current = async (args, header) => {
-    try {
-        if (!header.authorization) {
-            throw errorMessageToken.empty;
-        }
-        if (!verifyManager(header.authorization)) {
-            throw errorMessageToken.invalid;
-        } else {
-            if (args.username) {
-                return Managers.findOne({ username: args.username });
-            } else {
-                throw `Not found in db -> ${result} `;
-            }
-        }
-    } catch (exception) {
-        console.error(exception);
-        return exception;
-    }
-};
 
 /**
  * 
@@ -59,3 +40,30 @@ module.exports.login = async (manager) => {
         return exception
     }
 };
+
+
+module.exports.current = async (args, header) => {
+    try {
+        if (!header.authorization) {
+            throw errorMessageToken.empty;
+        }
+        if (!verifyManager(header.authorization)) {
+            throw errorMessageToken.invalid;
+        } else {
+            if (args.username) {
+                return Managers.findOne({ username: args.username });
+            } else {
+                throw `Not found in db -> ${result} `;
+            }
+        }
+    } catch (exception) {
+        console.error(exception);
+        return exception;
+    }
+};
+
+// get-worker
+// get-workers
+
+// get-worker-location
+// get-worker-locations
