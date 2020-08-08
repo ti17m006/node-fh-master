@@ -18,7 +18,8 @@
     "npm": "^6.14.6"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "server": "npm start"
   },
   "repository": {
     "type": "git",
