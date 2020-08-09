@@ -43,7 +43,7 @@ module.exports.newWorker = async (worker, headers) => {
     try {
         let _worker = {
             id: worker.id,
-            fullaname: worker.fullname,
+            fullname: worker.fullname,
             username: worker.worker,
             password: worker.password
         };
