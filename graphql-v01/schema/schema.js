@@ -40,6 +40,11 @@ const RootQuery = new GraphQLObjectType({
                 username: { type: GraphQLString }
             },
             resolve: (parent, args, context) => (manager_query.current(args, context.headers))
+        },
+        wroker: {
+            type: [WorkerType],
+            args: {},
+            resolve: (parent, args, context) => (manager_mutation.newWorekr(args, context.headers))
         }
     }
 });
