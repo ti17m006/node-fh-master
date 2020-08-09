@@ -2,7 +2,11 @@ const { Managers, Workers } = require('../../database/mogodb_connection');
 const { hashPasword } = require('../../miscellaneous/bcryptHash');
 const { validateManager, validateWorker } = require('../../joi_schema/joi_schema');
 
-// register
+/**
+ *
+ * @param {"structure: id, fullname, username, password"} manager
+ * @returns true or false
+ */
 module.exports.register = async (manager) => {
     try {
         let _manager = {
