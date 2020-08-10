@@ -62,9 +62,9 @@ module.exports.current = async (args, header) => {
     }
 };
 
-// get-worker
-// get-workers
-module.exports.worker = async () => { };
+module.exports.getWorker = async () => { };
+
+module.exports.getWorkers = async () => { };
 
 // get-worker-location
 // get-worker-locations

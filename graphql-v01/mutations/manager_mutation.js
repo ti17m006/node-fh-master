@@ -70,6 +70,4 @@ module.exports.newWorker = async (worker, headers) => {
  * @param {"worker's id"} id
  * @returns true or false
  */
-module.exports.deleteWorker = (id) => {
-
-}
+// TODO: module.exports.deleteWorker = (id) => { }

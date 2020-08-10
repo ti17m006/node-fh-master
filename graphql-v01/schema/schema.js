@@ -3,7 +3,8 @@ const {
     GraphQLObjectType,
     GraphQLID,
     GraphQLScalarType,
-    GraphQLString
+    GraphQLString,
+    GraphQLList
 } = require('graphql');
 
 const {
@@ -42,9 +43,15 @@ const RootQuery = new GraphQLObjectType({
             resolve: (parent, args, context) => (manager_query.current(args, context.headers))
         },
         wroker: {
-            type: [WorkerType],
-            args: {},
-            resolve: (parent, args, context) => (manager_mutation.newWorekr(args, context.headers))
+            type: WorkerType,
+            args: {
+                username: { type: GraphQLString }
+            },
+            resolve: (parent, args, context) => (manager_mutation.getWorker(args, context.headers))
+        },
+        workers: {
+            type: new GraphQLList(WorkerType), // WorkerListType ==> new GraphQLList(WorkerType);
+            resolve: (parent, args, context) => (manager_mutation.getWorkers(args, context.headers))
         }
     }
 });
@@ -56,6 +63,11 @@ const RootMutation = new GraphQLObjectType({
             type: ManagerType,
             args: ManagerObject,
             resolve: (parent, args) => (manager_mutation.register(args))
+        },
+        workerRegister: {
+            type: WorkerType,
+            args: WorkerObject,
+            resolve: (parent, args, context) => (manager_mutation.newWorker(args, context.headers))
         }
     }
 });
