@@ -6,7 +6,6 @@ const { errorMessageToken, signatureManager, verifyManager } = require('../../mi
 
 const privateKey = `superunknown`;
 
-
 /**
  *
  * @param {object} manager 
