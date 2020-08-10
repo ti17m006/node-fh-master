@@ -1,7 +1,7 @@
 const { Managers, Workers } = require('../../database/mogodb_connection');
 const { hashPasword } = require('../../miscellaneous/bcryptHash');
 const { validateManager, validateWorker } = require('../../joi_schema/joi_schema');
-const { errorMessageToken } = require('../../miscellaneous/jwtModels');
+const { errorMessageToken, verifyManager } = require('../../miscellaneous/jwtModels');
 
 /**
  *
@@ -25,7 +25,7 @@ module.exports.register = async (manager) => {
                 throw 'Manager exists';
             }
             _manager.password = await hashPasword(_manager.password);
-            return Managers.create(_worker)
+            return Managers.create(_manager)
                 .then((success) => { console.log(`Manager saved\n${success}`); return true; })
                 .catch((error) => { console.error(error); return false });
         }
@@ -52,14 +52,14 @@ module.exports.newWorker = async (worker, headers) => {
         let _worker = {
             id: worker.id,
             fullname: worker.fullname,
-            username: worker.worker,
+            username: worker.username,
             password: worker.password
         };
         let check = validateWorker(_worker);
         if (check.error) {
             throw `Joi validation failed ${check.error}`;
         } else {
-            const worker_db = await Workers.findOne({ username: username });
+            const worker_db = await Workers.findOne({ username: _worker.username });
             if (worker_db) {
                 throw 'Worker exists.'
             }
