@@ -1,11 +1,12 @@
 const { Managers, Workers } = require('../../database/mogodb_connection');
 const { hashPasword } = require('../../miscellaneous/bcryptHash');
 const { validateManager, validateWorker } = require('../../joi_schema/joi_schema');
+const { errorMessageToken } = require('../../miscellaneous/jwtModels');
 
 /**
  *
  * @param {"structure: id, fullname, username, password"} manager
- * @returns true or false
+ * @returns {boolean} true/false
  */
 module.exports.register = async (manager) => {
     try {
@@ -25,7 +26,7 @@ module.exports.register = async (manager) => {
             }
             _manager.password = await hashPasword(_manager.password);
             return Managers.create(_worker)
-                .then((success) => { console.log(`MAnager saved\n${success}`); return true; })
+                .then((success) => { console.log(`Manager saved\n${success}`); return true; })
                 .catch((error) => { console.error(error); return false });
         }
     } catch (exception) {
@@ -37,10 +38,17 @@ module.exports.register = async (manager) => {
 /**
  * 
  * @param {"structure: id, fullname, username, password"} worker 
- * @returns true or false
+ * @returns {boolean} true/false
  */
 module.exports.newWorker = async (worker, headers) => {
     try {
+        if (!headers.authorization) {
+            throw errorMessageToken.empty;
+        }
+        if (!verifyManager(headers.authorization)) {
+            throw errorMessageToken.invalid;
+        } else {
+        }
         let _worker = {
             id: worker.id,
             fullname: worker.fullname,
@@ -70,4 +78,4 @@ module.exports.newWorker = async (worker, headers) => {
  * @param {"worker's id"} id
  * @returns true or false
  */
-// TODO: module.exports.deleteWorker = (id) => { }
+// TODO: module.exports.deleteWorker = (id, headers) => { }

@@ -42,16 +42,17 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve: (parent, args, context) => (manager_query.current(args, context.headers))
         },
-        wroker: {
+        worker: {
             type: WorkerType,
             args: {
                 username: { type: GraphQLString }
             },
-            resolve: (parent, args, context) => (manager_mutation.getWorker(args, context.headers))
+            resolve: (parent, args, context) => (manager_query.getWorker(args, context.headers))
         },
         workers: {
             type: new GraphQLList(WorkerType), // WorkerListType ==> new GraphQLList(WorkerType);
-            resolve: (parent, args, context) => (manager_mutation.getWorkers(args, context.headers))
+            args: {},
+            resolve: (parent, args, context) => (manager_query.getWorkers(context.headers))
         }
     }
 });
