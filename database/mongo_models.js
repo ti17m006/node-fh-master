@@ -50,12 +50,13 @@ const GeolocationModel = {
 }
 
 const GeolocationModelNumber = {
+	id: Id,
 	workerId: Id,
 	locationLength: {
 		type: Number,
 		default: 0
 	},
-	location: [
+	locations: [
 		{
 			longitude: { type: Number },
 			latitude: { type: Number }

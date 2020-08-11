@@ -67,6 +67,7 @@ module.exports.newWorker = async (worker, headers) => {
             return Workers.create(_worker)
                 .then((success) => {
                     GeolocationNumber.create({
+                        id: 1,
                         workerId: _worker.id
                     })
                         .then((success) => { console.log(`Geolocation created ${success}`); })

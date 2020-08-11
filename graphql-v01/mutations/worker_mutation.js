@@ -15,18 +15,22 @@ module.exports.saveLocation = async (data, headers) => {
             let _location = {
                 longitude: data.longitude,
                 latitude: data.latitude
-            }
+            };
             const update = await GeolocationNumber.updateOne(
                 { workerId: _workerId },
                 {
-                    $push: { location: _location }
+                    $inc: { locationLength: 1 },
+                    $push: { locations: _location }
+                },
+                {
+                    new: true
                 });
-
-            console.log(update);
-            return 'Location saved';
+            return true;
         }
     } catch (exception) {
         console.error(exception);
         return false;
     }
 };
+
+// newLocation - new session - new shift
