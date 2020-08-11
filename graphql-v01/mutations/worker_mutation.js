@@ -1,24 +1,29 @@
 const { errorMessageToken, verifyWorker } = require('../../miscellaneous/jwtModels');
-const { Geolocation } = require('../../database/mogodb_connection')
+const { GeolocationNumber } = require('../../database/mogodb_connection')
 
 /**
  * 
  * @param {} 
  */
 
-module.exports.saveLocation = (location, headers) => {
+module.exports.saveLocation = async (data, headers) => {
     try {
         if (!headers.authorization && !verifyWorker(headers.authorization)) {
             throw 'Token error'
         } else {
+            let _workerId = data.workerId;
             let _location = {
-                workersId: location.workersId,
-                location: {
-                    longitude: location.longitude,
-                    latitude: location.latitude
-                }
+                longitude: data.longitude,
+                latitude: data.latitude
             }
-            const save = Geolocation.create(location);
+            const update = await GeolocationNumber.updateOne(
+                { workerId: _workerId },
+                {
+                    $push: { location: _location }
+                });
+
+            console.log(update);
+            return 'Location saved';
         }
     } catch (exception) {
         console.error(exception);

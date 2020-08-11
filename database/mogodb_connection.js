@@ -28,3 +28,4 @@ module.exports = new Database();
 module.exports.Managers = mongoose.model('Managers', new mongoose.Schema(Model.Manager));
 module.exports.Workers = mongoose.model('Worker', new mongoose.Schema(Model.Worker));
 module.exports.Geolocation = mongoose.model('Geolocation', new mongoose.Schema(Model.Geolocation));
+module.exports.GeolocationNumber = mongoose.model('GeolocationNumber', new mongoose.Schema(Model.GeolocationNumber))

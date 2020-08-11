@@ -4,7 +4,9 @@ const {
     GraphQLID,
     GraphQLScalarType,
     GraphQLString,
-    GraphQLList
+    GraphQLList,
+    GraphQLInt,
+    GraphQLFloat
 } = require('graphql');
 
 const {
@@ -53,6 +55,7 @@ const RootQuery = new GraphQLObjectType({
         worker: {
             type: WorkerType,
             args: {
+                id: { type: GraphQLID },
                 username: { type: GraphQLString }
             },
             resolve: (parent, args, context) => (manager_query.getWorker(args, context.headers))
@@ -80,8 +83,12 @@ const RootMutation = new GraphQLObjectType({
         },
         workerLocation: {
             type: GeolocationType,
-            args: LocationObject,
-            resolve: (parent, args, context) => { }
+            args: {
+                workerId: { type: GraphQLID },
+                longitude: { type: GraphQLFloat },
+                latitude: { type: GraphQLFloat }
+            },
+            resolve: (parent, args, context) => ({ message: worker_mutation.saveLocation(args, context.headers) })
         }
     }
 });

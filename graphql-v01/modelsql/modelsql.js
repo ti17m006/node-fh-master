@@ -3,7 +3,9 @@ const {
     GraphQLObjectType,
     GraphQLList,
     GraphQLID,
-    GraphQLString
+    GraphQLString,
+    GraphQLInt,
+    GraphQLFloat
 } = require('graphql');
 
 const LoginObject = {
@@ -29,10 +31,7 @@ const WorkerObject = {
     message: { type: GraphQLString }
 };
 
-const LocationObject = {
-    longitude: { type: GraphQLString },
-    latitude: { type: GraphQLString }
-};
+
 
 const Login = {
     name: 'Login',
@@ -51,7 +50,10 @@ const Worker = {
 
 const Location = {
     name: 'Location',
-    fields: LocationObject
+    fields: {
+        longitude: { type: GraphQLFloat },
+        latitude: { type: GraphQLFloat }
+    }
 };
 
 const Geolocation = {
@@ -59,14 +61,14 @@ const Geolocation = {
     fields: {
         id: { type: GraphQLID },
         worker_id: { type: GraphQLID },
-        geo: { type: new GraphQLList(new GraphQLObjectType(Location)) }
+        geo: { type: new GraphQLList(new GraphQLObjectType(Location)) },
+        message: { type: GraphQLString }
     }
 };
 
 module.exports.LoginObject = LoginObject;
 module.exports.ManagerObject = ManagerObject;
 module.exports.WorkerObject = WorkerObject;
-module.exports.LocationObject = LocationObject;
 
 module.exports.LoginType = new GraphQLObjectType(Login);
 module.exports.ManagerType = new GraphQLObjectType(Manager);

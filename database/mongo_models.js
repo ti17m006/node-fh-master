@@ -1,3 +1,5 @@
+const { number } = require("@hapi/joi")
+
 /** DB Models */
 const Id = {
 	type: Number,
@@ -47,6 +49,21 @@ const GeolocationModel = {
 	]
 }
 
+const GeolocationModelNumber = {
+	workerId: Id,
+	locationLength: {
+		type: Number,
+		default: 0
+	},
+	location: [
+		{
+			longitude: { type: Number },
+			latitude: { type: Number }
+		}
+	]
+}
+
 module.exports.Manager = ManagerModel;
 module.exports.Worker = WorkerModel;
 module.exports.Geolocation = GeolocationModel;
+module.exports.GeolocationNumber = GeolocationModelNumber;

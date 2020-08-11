@@ -1,4 +1,4 @@
-const { Managers, Workers } = require('../../database/mogodb_connection');
+const { Managers, Workers, GeolocationNumber } = require('../../database/mogodb_connection');
 const { hashPasword } = require('../../miscellaneous/bcryptHash');
 const { validateManager, validateWorker } = require('../../joi_schema/joi_schema');
 const { errorMessageToken, verifyManager } = require('../../miscellaneous/jwtModels');
@@ -65,8 +65,15 @@ module.exports.newWorker = async (worker, headers) => {
             }
             _worker.password = await hashPasword(_worker.password);
             return Workers.create(_worker)
-                .then((success) => { console.log(`Worker saved\n${success}`); return success; })
-                .catch((error) => { console.error(error); return error });
+                .then((success) => {
+                    GeolocationNumber.create({
+                        workerId: _worker.id
+                    })
+                        .then((success) => { console.log(`Geolocation created ${success}`); })
+                        .catch((error) => { throw error });
+                    console.log(`Worker saved\n${success}`); return true;
+                })
+                .catch((error) => { throw error });
         }
     } catch (exception) {
         console.error(exception);

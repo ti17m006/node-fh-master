@@ -1,6 +1,6 @@
 
-const { Managers, Workers } = require('../../database/mogodb_connection');
-const { validateLogin, validateManager } = require('../../joi_schema/joi_schema');
+const { Managers, Workers, GeolocationNumber } = require('../../database/mogodb_connection');
+const { validateLogin } = require('../../joi_schema/joi_schema');
 const { compare } = require('../../miscellaneous/bcryptHash');
 const { errorMessageToken, signatureManager, verifyManager } = require('../../miscellaneous/jwtModels');
 
@@ -61,6 +61,15 @@ module.exports.current = async (args, headers) => {
  * 
  * @param {Number} args username 
  * @param {Object} headers authorization - 'jwt token'
+ * 
+ * // const t = await GeolocationNumber.find({ workerId: _workerId });
+// .then((success) => {
+//     // const t = GeolocationNumber.find({ workerId: _workerId })
+//     //     .then((result) => ({ result }))
+//     //     .catch((error) => { throw error });
+//     return success;
+// })
+// .catch((error) => { throw error });
  */
 module.exports.getWorker = async (args, headers) => {
     try {
@@ -70,20 +79,24 @@ module.exports.getWorker = async (args, headers) => {
         if (!verifyManager(headers.authorization)) {
             throw errorMessageToken.invalid;
         }
+        let _workerId = args.id;
         let _username = args.username;
-        return Workers.findOne({ username: _username })
-            .then((success) => { console.log(success); return success })
-            .catch((error) => { throw error });
+        return await Workers.findOne({ username: _username });
     } catch (exception) {
         console.error(exception);
         return exception;
     }
 };
 
+
+
 /**
  *
  * @param {Number} args username 
  * @param {Object} headers authorization - 'jwt token'
+ * 
+ * .then((success) => { console.log(success); return success })
+            .catch((error) => { throw error });
  */
 module.exports.getWorkers = async (headers) => {
     try {
@@ -93,14 +106,13 @@ module.exports.getWorkers = async (headers) => {
         if (!verifyManager(headers.authorization)) {
             throw errorMessageToken.invalid;
         }
-        return Workers.find({})
-            .then((success) => { console.log(success); return success })
-            .catch((error) => { throw error });
+        return await Workers.find({});
     } catch (exception) {
         console.error(exception);
         return exception;
     }
 };
+
 
 // module.exports.location = async () => { };
 // module.exports.locations = async () => { };

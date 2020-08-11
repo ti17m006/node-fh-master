@@ -18,10 +18,8 @@ module.exports.login = async (worker) => {
             if (!payload) {
                 throw 'Worker does not exist';
             } else {
-                console.log(payload.password);
-                console.log(_worker.password);
                 if (await compare(_worker.password, payload.password)) {
-                    return signatureWorker(payload);
+                    return `${signatureWorker(payload)} with an id: ${payload.id}`;
                 } else {
                     throw errorMessageToken.invalid;
                 }
