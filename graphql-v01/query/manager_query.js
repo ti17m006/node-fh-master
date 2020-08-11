@@ -4,29 +4,22 @@ const { validateLogin, validateManager } = require('../../joi_schema/joi_schema'
 const { compare } = require('../../miscellaneous/bcryptHash');
 const { errorMessageToken, signatureManager, verifyManager } = require('../../miscellaneous/jwtModels');
 
-const privateKey = `superunknown`;
-
-/**
- *
- * @param {object} manager 
- */
 module.exports.login = async (manager) => {
     try {
-        let local_manager = {
+        let _manager = {
             username: manager.username.toString(),
             password: manager.password.toString()
         };
-        const check = validateLogin(local_manager);
+        const check = validateLogin(_manager);
         if (check.error) {
             throw `Joi validation failed ${check.error}`;
         } else {
-            const payload = await Managers.findOne({ username: local_manager.username });
-            console.log(payload);
+            const payload = await Managers.findOne({ username: _manager.username });
             if (!payload) {
                 throw 'Manager does not exist';
             } else {
-                if (await compare(local_manager.password, payload.password)) {
-                    return signatureManager(payload, privateKey);
+                if (await compare(_manager.password, payload.password)) {
+                    return signatureManager(payload);
                 } else {
                     throw errorMessageToken.invalid;
                 }
@@ -35,7 +28,6 @@ module.exports.login = async (manager) => {
         }
     } catch (exception) {
         console.error(exception);
-        return exception
     }
 };
 

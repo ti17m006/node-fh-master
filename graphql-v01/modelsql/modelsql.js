@@ -10,21 +10,23 @@ const LoginObject = {
     username: { type: GraphQLString },
     password: { type: GraphQLString },
     token: { type: GraphQLString },
-    status: { type: GraphQLString }
+    message: { type: GraphQLString }
 }
 
 const ManagerObject = {
     id: { type: GraphQLID },
     fullname: { type: GraphQLString },
     username: { type: GraphQLString },
-    password: { type: GraphQLString }
+    password: { type: GraphQLString },
+    message: { type: GraphQLString }
 };
 
 const WorkerObject = {
     id: { type: GraphQLID },
     fullname: { type: GraphQLString },
     username: { type: GraphQLString },
-    password: { type: GraphQLString }
+    password: { type: GraphQLString },
+    message: { type: GraphQLString }
 };
 
 const LocationObject = {

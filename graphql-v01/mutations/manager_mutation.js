@@ -65,12 +65,12 @@ module.exports.newWorker = async (worker, headers) => {
             }
             _worker.password = await hashPasword(_worker.password);
             return Workers.create(_worker)
-                .then((success) => { console.log(`Worker saved\n${success}`); return true; })
-                .catch((error) => { console.error(error); return false });
+                .then((success) => { console.log(`Worker saved\n${success}`); return success; })
+                .catch((error) => { console.error(error); return error });
         }
     } catch (exception) {
         console.error(exception);
-        return false;
+        return exception;
     }
 }
 

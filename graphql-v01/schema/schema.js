@@ -13,7 +13,9 @@ const {
     LoginType,
     ManagerObject,
     WorkerObject,
-    LoginObject
+    LoginObject,
+    GeolocationType,
+    LocationObject
 } = require('../modelsql/modelsql');
 
 const manager_query = require('../query/manager_query');
@@ -31,9 +33,15 @@ const RootQuery = new GraphQLObjectType({
                 username: { type: GraphQLString },
                 password: { type: GraphQLString }
             },
-            resolve: (parent, args) => ({
-                token: manager_query.login(args)
-            })
+            resolve: (parent, args) => ({ token: manager_query.login(args) })
+        },
+        workerLogin: {
+            type: LoginType,
+            args: {
+                username: { type: GraphQLString },
+                password: { type: GraphQLString }
+            },
+            resolve: (parent, args) => ({ token: worker_query.login(args) })
         },
         current: {
             type: ManagerType,
@@ -68,7 +76,12 @@ const RootMutation = new GraphQLObjectType({
         workerRegister: {
             type: WorkerType,
             args: WorkerObject,
-            resolve: (parent, args, context) => (manager_mutation.newWorker(args, context.headers))
+            resolve: (parent, args, context) => ({ message: manager_mutation.newWorker(args, context.headers) })
+        },
+        workerLocation: {
+            type: GeolocationType,
+            args: LocationObject,
+            resolve: (parent, args, context) => { }
         }
     }
 });
