@@ -63,7 +63,7 @@ router.post(`/login`, async (req, res) => {
             throw 'Invalid password';
         }
     } catch (exception) {
-        console.error(` ${exception}\n`);
+        console.error(`${exception}`);
         res.send(exception);
     }
 });
@@ -132,16 +132,36 @@ router.get('/get-worker/:id', async (req, res) => {
         if (!req.header('jwt_manager')) {
             throw errorMessageToken.empty;
         }
-        if (verifyManager(req.header('jwt_manager'), privateKey)) {
+        if (!verifyManager(req.header('jwt_manager'))) {
             throw errorMessageToken.invalid;
         }
         const local_worker_id = parseInt(req.params.id);
         const local_worker = await Workers.find({ id: local_worker_id });
-        if (local_worker) {
+        if (!local_worker) {
             throw 'Worker not found';
         }
         const local_geoloc = await Geolocation.find({ workerId: local_worker_id });
         const output = `${local_worker} -> ${local_geoloc}`;
+        console.log(output);
+        res.send(output);
+    }
+    catch (exception) {
+        console.error(exception);
+        res.status(400).send(`${exception}`);
+    }
+});
+
+router.get('/get-workers', async (req, res) => {
+    try {
+        if (!req.header('jwt_manager')) {
+            throw errorMessageToken.empty;
+        }
+        console.log(req.header('jwt_manager'));
+        if (!verifyManager(req.header('jwt_manager'))) {
+            throw errorMessageToken.invalid;
+        }
+        const local_worker = await Workers.find({});
+        const output = `${local_worker}`;
         console.log(output);
         res.send(output);
     }
@@ -156,7 +176,7 @@ router.put('/update-worker/:id', async (req, res) => {
         if (!req.header('jwt_manager')) {
             throw errorMessageToken.empty;
         }
-        if (!verifyManager(req.header('jwt_manager'), privateKey)) {
+        if (!verifyManager(req.header('jwt_manager'))) {
             throw errorMessageToken.invalid;
         }
         const local_worker = {
@@ -191,7 +211,7 @@ router.delete('/delete-worker/:id', async (req, res) => {
         if (!req.header('jwt_manager')) {
             throw errorMessageToken.empty;
         }
-        if (!verifyManager(req.header('jwt_manager'), privateKey)) {
+        if (!verifyManager(req.header('jwt_manager'))) {
             throw errorMessageToken.invalid;
         }
         const local_worker_id = parseInt(req.params.id);

@@ -15,19 +15,18 @@ module.exports.errorMessageToken = {
 const privateKeyManager = 'Manager_private_key';
 const privateKeyWorker = 'Worker_private_key';
 
-module.exports.signatureManager = (payload) => {
-    return jsonwebtoken.sign({
+module.exports.signatureManager = (payload) => (
+    jsonwebtoken.sign({
         username: payload.username,
         password: payload.password
-    }, privateKeyManager);
-};
+    }, privateKeyManager)
+);
 
-module.exports.signatureWorker = (payload) => {
-    return jsonwebtoken.sign({
+module.exports.signatureWorker = (payload) => (
+    jsonwebtoken.sign({
         username: payload.username,
         password: payload.password
-    }, privateKeyWorker);
-};
+    }, privateKeyWorker));
 
 module.exports.verifyManager = (token) => (jsonwebtoken.verify(token, privateKeyManager));
 
