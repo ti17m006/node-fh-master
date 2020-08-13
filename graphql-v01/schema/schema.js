@@ -16,8 +16,11 @@ const {
     ManagerObject,
     WorkerObject,
     LoginObject,
+    LocationType,
     GeolocationType,
-    LocationObject
+    GeolocationObject,
+    LocationObject,
+    WorkerLocationType
 } = require('../modelsql/modelsql');
 
 const manager_query = require('../query/manager_query');
@@ -61,9 +64,16 @@ const RootQuery = new GraphQLObjectType({
             resolve: (parent, args, context) => (manager_query.getWorker(args, context.headers))
         },
         workers: {
-            type: new GraphQLList(WorkerType), // WorkerListType ==> new GraphQLList(WorkerType);
+            type: new GraphQLList(WorkerType),
             args: {},
             resolve: (parent, args, context) => (manager_query.getWorkers(context.headers))
+        },
+        workerLocation: {
+            type: WorkerLocationType,
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve: (parent, args, context) => (manager_query.getWorkerGeo(args, context.headers))
         }
     }
 });

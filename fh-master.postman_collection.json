@@ -238,7 +238,14 @@
 					"name": "managerLogin01",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "jwt_key",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NjYxMjU4OH0.32t8YUg4dOryc9nc93kEapSXrIaf95cbkw0qMsXmS-A",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"username\": \"amartin\",\n    \"password\": \"123abc\"\n}",
@@ -270,8 +277,8 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "jwt-manager",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhbWFydGluIiwiaWF0IjoxNTk1MDcwMDM3fQ.5Sd1XOlfi6jAv-E8Qb0DtKYaD4oGzUYAHOSYDvTRsPA",
+								"key": "jwt_manager",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzI1OTcxNH0.lUyU2la0Zf7vP7sCD0CUQv6VTMAPDU9l58q9nPvs1vY",
 								"type": "text"
 							}
 						],
@@ -360,9 +367,9 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "jwt-manager",
+								"key": "jwt_manager",
 								"type": "text",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTU1MDN9.DTUPvxgggQPkBbiLK1CsPglk5t3ymNTwIbfD6GH3IGE"
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NjYxMzA0NH0.EG5FVJxH99-AbSZlJOmcNymwH4g7q2IzzzBaFkSnP5w"
 							}
 						],
 						"body": {
@@ -975,7 +982,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/worker/location?id=1",
+							"raw": "http://localhost:8000/api/worker/location/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -984,12 +991,13 @@
 							"path": [
 								"api",
 								"worker",
-								"location"
+								"location",
+								":id"
 							],
-							"query": [
+							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": ""
 								}
 							]
 						}
@@ -1017,7 +1025,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/worker/location?id=1",
+							"raw": "http://localhost:8000/api/worker/location/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1026,13 +1034,329 @@
 							"path": [
 								"api",
 								"worker",
-								"location"
+								"location",
+								":id"
 							],
-							"query": [
+							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "graphql",
+			"item": [
+				{
+					"name": "managerLogin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($username: String, $password: String){\n    managerLogin(username: $username, password: $password) {\n        token\n    }\n}",
+								"variables": "{\n    \"username\": \"amartin\",\n    \"password\": \"123abc\"\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registerManager",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzA4MDMwMn0.RAul2imvOKuyxSQotJE9Uwje2zJnPHONtnVP3mVEGhA",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    managerRegister(\n    id: 4,\n    fullname: \"Jacob Davis\",\n    username: \"jdavis\",\n    password: \"qwerty\"\n    ) {\n        id,\n        fullname,\n        username\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getWorkers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzA4MDMwMn0.RAul2imvOKuyxSQotJE9Uwje2zJnPHONtnVP3mVEGhA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    workers {\n        id,\n        username\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getWorker",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzA4MDMwMn0.RAul2imvOKuyxSQotJE9Uwje2zJnPHONtnVP3mVEGhA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($id: ID, $username: String) {\n    worker(id: $id, username: $username) {\n        id,\n        fullname,\n        username\n\n    }\n}",
+								"variables": "{\n    \"id\": 5,\n    \"username\": \"cathy@jiang.ee\"\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerRegister02",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzA4MDMwMn0.RAul2imvOKuyxSQotJE9Uwje2zJnPHONtnVP3mVEGhA"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    workerRegister(id: 2, fullname: \"Shannon Sumner\", username: \"frances@gibbons.ir\", password: \"qwerty\") {\n        id,\n        fullname,\n        username,\n        password\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerRegister",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzA4MDMwMn0.RAul2imvOKuyxSQotJE9Uwje2zJnPHONtnVP3mVEGhA"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($id: ID, $fullname: String, $username: String, $password: String) {\n    workerRegister(id: $id, fullname: $fullname, username: $username, password: $password) {\n        message\n    }\n}",
+								"variables": "{\n        \"id\": 10,\n        \"fullname\": \"Marianne Padgett\",\n        \"username\": \"vickie@sawyer.tw\",\n        \"password\": \"qwerty\"\n    }"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerLogin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($username: String, $password: String){\n    workerLogin(username: $username, password: $password) {\n        token\n    }\n}",
+								"variables": "{\n    \"username\": \"cathy@jiang.ee\",\n    \"password\": \"qwerty\"\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workersLocation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvYW5Ac3VtbmVyLmd1IiwicGFzc3dvcmQiOiIkMmIkMTAkaFgyZlQ0NS4uOURldElHOTl0NmljdUtiZmZRWE90YjVPMHgzeUVJcmk0UDdDWnZEejE2UGEiLCJpYXQiOjE1OTcxNTc4NDB9.xaK8mSuOEx8VXHcnQ0s4DdPiyBXWmBDkL6W5Rec8VUk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($workerId: ID, $longitude: Float, $latitude: Float) {\n    workerLocation(workerId: $workerId, longitude: $longitude, latitude: $latitude) {\n        # geo {\n        #     longitude,\n        #     latitude\n        # },\n        message\n    }\n}",
+								"variables": "{\n    \"workerId\": 10,\n    \"longitude\": 16.51296615600586,\n    \"latitude\": 48.21357825922427\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "newWorkerLocation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvYW5Ac3VtbmVyLmd1IiwicGFzc3dvcmQiOiIkMmIkMTAkaFgyZlQ0NS4uOURldElHOTl0NmljdUtiZmZRWE90YjVPMHgzeUVJcmk0UDdDWnZEejE2UGEiLCJpYXQiOjE1OTcxNTc4NDB9.xaK8mSuOEx8VXHcnQ0s4DdPiyBXWmBDkL6W5Rec8VUk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation ($id: ID, $workerId: ID, $longitude: Float, $latitude: Float) {\n    newWorkerLocation(id: $id, workerId: $workerId, longitude: $longitude, latitude: $latitude) {\n        message\n    }\n}",
+								"variables": "{   \n    \"id\": 2,\n    \"workerId\": 5,\n    \"longitude\": 16.51296615600586,\n    \"latitude\": 48.21357825922427\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "workerGeolocations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzA4MDMwMn0.RAul2imvOKuyxSQotJE9Uwje2zJnPHONtnVP3mVEGhA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($id: ID) {\n    workerLocation(id: $id) {\n            fullname   \n            username,\n            locations {\n                longitude,\n                latitude\n            }\n            }\n        }\n    \n",
+								"variables": "{\n    \"id\": 10\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"graphql"
 							]
 						}
 					},
@@ -1047,13 +1371,13 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "jwt-manager",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqZGF2aXMiLCJpYXQiOjE1ODkyMTM5MDB9.7LaGFGeRoPDJhDm2eouxoZArzpIJdsBQPTUGL83naBE",
+						"key": "jwt_manager",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzI1OTcxNH0.lUyU2la0Zf7vP7sCD0CUQv6VTMAPDU9l58q9nPvs1vY",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/api/manager/get-worker/?id=2",
+					"raw": "http://localhost:8000/api/manager/get-worker/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1063,12 +1387,12 @@
 						"api",
 						"manager",
 						"get-worker",
-						""
+						":id"
 					],
-					"query": [
+					"variable": [
 						{
 							"key": "id",
-							"value": "2"
+							"value": "1"
 						}
 					]
 				}
@@ -1096,7 +1420,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/manager/update-worker?id=2",
+					"raw": "http://localhost:8000/api/manager/update-worker/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1105,9 +1429,10 @@
 					"path": [
 						"api",
 						"manager",
-						"update-worker"
+						"update-worker",
+						":id"
 					],
-					"query": [
+					"variable": [
 						{
 							"key": "id",
 							"value": "2"
@@ -1129,7 +1454,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/api/manager/delete-worker?id=3",
+					"raw": "http://localhost:8000/api/manager/delete-worker/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1138,13 +1463,41 @@
 					"path": [
 						"api",
 						"manager",
-						"delete-worker"
+						"delete-worker",
+						":id"
 					],
-					"query": [
+					"variable": [
 						{
 							"key": "id",
 							"value": "3"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "managerGetWorkers",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt_manager",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtYXJ0aW4iLCJwYXNzd29yZCI6IiQyYiQxMCQyT2M3LkJMcnEwc21KODBhRHBQakdlWmljQ25xMlBNN2NpaGpvdVE2SEsucG5KUWpsZ3J4bSIsImlhdCI6MTU5NzI1ODc2Nn0.FL7DCjG4afzwjfuF86dGG3HaPcbx7nFRbFcn_Alde90",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/manager/get-workers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"manager",
+						"get-workers"
 					]
 				}
 			},

@@ -31,8 +31,6 @@ const WorkerObject = {
     message: { type: GraphQLString }
 };
 
-
-
 const Login = {
     name: 'Login',
     fields: LoginObject
@@ -61,10 +59,30 @@ const Geolocation = {
     fields: {
         id: { type: GraphQLID },
         worker_id: { type: GraphQLID },
-        geo: { type: new GraphQLList(new GraphQLObjectType(Location)) },
+        locationList: { type: new GraphQLList(new GraphQLObjectType(Location)) },
         message: { type: GraphQLString }
     }
 };
+
+const WorkerLocation = {
+    name: 'WorkerLocation',
+    fields: {
+        id: { type: GraphQLID },
+        fullname: { type: GraphQLString },
+        username: { type: GraphQLString },
+        password: { type: GraphQLString },
+        message: { type: GraphQLString },
+        locations: {
+            type: new GraphQLList(new GraphQLObjectType({
+                name: 'WorkerGeolocation',
+                fields: {
+                    longitude: { type: GraphQLFloat },
+                    latitude: { type: GraphQLFloat }
+                }
+            }))
+        },
+    }
+}
 
 module.exports.LoginObject = LoginObject;
 module.exports.ManagerObject = ManagerObject;
@@ -74,3 +92,4 @@ module.exports.LoginType = new GraphQLObjectType(Login);
 module.exports.ManagerType = new GraphQLObjectType(Manager);
 module.exports.WorkerType = new GraphQLObjectType(Worker);
 module.exports.GeolocationType = new GraphQLObjectType(Geolocation);
+module.exports.WorkerLocationType = new GraphQLObjectType(WorkerLocation);

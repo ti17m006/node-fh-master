@@ -3,6 +3,7 @@ const { Managers, Workers, GeolocationNumber } = require('../../database/mogodb_
 const { validateLogin } = require('../../joi_schema/joi_schema');
 const { compare } = require('../../miscellaneous/bcryptHash');
 const { errorMessageToken, signatureManager, verifyManager } = require('../../miscellaneous/jwtModels');
+const _ = require('lodash');
 
 module.exports.login = async (manager) => {
     try {
@@ -89,6 +90,24 @@ module.exports.getWorker = async (args, headers) => {
 };
 
 
+module.exports.getWorkerGeo = async (args, headers) => {
+    try {
+        if (!headers.authorization) {
+            throw errorMessageToken.empty;
+        }
+        if (!verifyManager(headers.authorization)) {
+            throw errorMessageToken.invalid;
+        }
+        let _workerId = args.id;
+        const _worker = await Workers.findOne({ id: _workerId });
+        const _loc = await GeolocationNumber.findOne({ workerId: _workerId });
+        console.log({ ..._worker._doc, ..._loc._doc });
+        return { ..._worker._doc, ..._loc._doc };
+    } catch (exception) {
+        console.error(exception);
+        return exception;
+    }
+};
 
 /**
  *
