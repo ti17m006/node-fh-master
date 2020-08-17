@@ -1,5 +1,3 @@
-const { number } = require("@hapi/joi")
-
 /** DB Models */
 const Id = {
 	type: Number,
