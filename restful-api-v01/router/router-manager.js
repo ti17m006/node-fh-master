@@ -28,7 +28,6 @@ router.post(`/register`, async (req, res) => {
         if (await Managers.findOne({ username: local_manager.username })) {
             throw 'User exists';
         } else {
-
             local_manager.password = await hashPasword(local_manager.password);
             await Managers(local_manager).save();
             console.log(`Manager successfully saved.`);

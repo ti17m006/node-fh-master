@@ -50,7 +50,7 @@ router.get('/current', async (req, res) => {
 	}
 });
 
-router.put('/location', async (req, res) => {
+router.put('/location/:id', async (req, res) => {
 	try {
 		if (!req.header('jwt_worker')) {
 			throw errorMessageToken.empty;
