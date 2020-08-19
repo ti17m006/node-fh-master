@@ -134,15 +134,17 @@ router.get('/get-worker/:id', async (req, res) => {
         if (!verifyManager(req.header('jwt_manager'))) {
             throw errorMessageToken.invalid;
         }
-        const local_worker_id = parseInt(req.params.id);
-        const local_worker = await Workers.find({ id: local_worker_id });
-        if (!local_worker) {
+        const _worker_id = parseInt(req.params.id);
+        const _worker = await Workers.find({ id: _worker_id });
+        if (!_worker) {
             throw 'Worker not found';
         }
-        const local_geoloc = await Geolocation.find({ workerId: local_worker_id });
-        const output = `${local_worker} -> ${local_geoloc}`;
-        console.log(output);
-        res.send(output);
+        const _geoloc = await Geolocation.find({ workerId: _worker_id });
+        let _array = [];
+        _array.push(_worker[0]);
+        _array.push(_geoloc[0]);
+        console.log(_array);
+        res.send(_array);
     }
     catch (exception) {
         console.error(exception);
@@ -160,7 +162,7 @@ router.get('/get-workers', async (req, res) => {
             throw errorMessageToken.invalid;
         }
         const local_worker = await Workers.find({});
-        const output = `${local_worker}`;
+        const output = JSON.stringify(local_worker);
         console.log(output);
         res.send(output);
     }
