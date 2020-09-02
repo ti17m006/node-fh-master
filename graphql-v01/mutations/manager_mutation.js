@@ -26,12 +26,16 @@ module.exports.register = async (manager) => {
             }
             _manager.password = await hashPasword(_manager.password);
             return Managers.create(_manager)
-                .then((success) => { console.log(`Manager saved\n${success}`); return true; })
-                .catch((error) => { console.error(error); return false });
+                .then((success) => {
+                    return {
+                        ...success._doc, ...{ "message": "Successfully saved" }
+                    }
+                })
+                .catch((error) => { throw error });
         }
     } catch (exception) {
         console.error(exception);
-        return false;
+        return { "message": exception };
     }
 }
 
